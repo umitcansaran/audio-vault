@@ -122,12 +122,6 @@ function App() {
     <div className="container">
       <h1>Audio Vault</h1>
 
-      {(selectedArtist || selectedLabel || selectedYear) && (
-        <button className="back-button" onClick={handleBack}>
-          ⬅ Back
-        </button>
-      )}
-
       {!folderPath ? (
         <div className="select-folder-button">
           <button onClick={selectFolder}>Select Folder</button>
@@ -135,6 +129,11 @@ function App() {
       ) : (
         <>
           <div className="filters">
+            {(selectedArtist || selectedLabel || selectedYear) && (
+              <button className="back-button" onClick={handleBack}>
+                ⬅ Back
+              </button>
+            )}
             <select
               id="artistDropdown"
               value={selectedArtist}
@@ -190,6 +189,7 @@ function App() {
             <table>
               <thead>
                 <tr>
+                  <th></th>
                   <th onClick={() => handleSort("artist")}>
                     Artist{" "}
                     {sortColumn === "artist"
