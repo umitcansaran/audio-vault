@@ -1,0 +1,1 @@
+# A lightweight desktop app built with Electron and React that scans your music folders, offering sorting and filtering options by label, artist, and year. It provides easy navigation and quick access to your collection, allowing you to click on albums to view and listen to songs.
