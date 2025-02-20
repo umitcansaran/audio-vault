@@ -1,0 +1,22 @@
+{
+  "name": "audio-vault",
+  "version": "1.0.0",
+  "description": "An Electron music organizer",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-builder"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@electron/remote": "^2.1.2",
+    "electron-packager": "^17.1.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+    "electron": "^34.2.0",
+    "electron-builder": "^25.1.8"
+  }
+}

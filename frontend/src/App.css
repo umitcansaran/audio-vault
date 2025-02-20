@@ -1,0 +1,153 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: rgba(89, 89, 89, 0.465);
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(../image/5.jpg) center/cover no-repeat;
+  opacity: 0.8; /* Adjust this for transparency */
+  z-index: -1;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.container {
+  font-family: Arial, sans-serif;
+}
+
+.filters,
+.sort {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+select,
+button {
+  padding: 8px;
+  font-size: 16px;
+  background-color: rgba(73, 73, 111, 0.372);
+  color: aliceblue;
+}
+
+.album-list {
+  list-style: none;
+  padding: 20px;
+}
+
+.album-list,
+tr {
+  padding: 20px;
+  cursor: pointer;
+}
+
+td {
+  background-color: rgb(187, 186, 186);
+  color: rgb(33, 48, 79);
+}
+
+th {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.album-list-table {
+  background-color: rgba(51, 53, 53, 0.692);
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+  font-family: Arial, sans-serif;
+}
+
+select,
+button {
+  padding: 8px;
+  font-size: 16px;
+}
+
+.album-list {
+  width: 15vw;
+  list-style: none;
+  padding: 2px 10px;
+  /* width: auto; */
+  max-width: 35vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+h1 {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  color: rgb(73, 73, 111);
+  text-align: center;
+  text-shadow: 3px 3px 0 #000, -3px 3px 0 #000, -3px -3px 0 #000,
+    3px -3px 0 #000;
+}
+
+select,
+#rescanBtn {
+  background-color: rgba(73, 73, 111, 0.372);
+  color: aliceblue;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 8px 12px;
+  background-color: rgba(73, 73, 111, 0.807);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: rgb(73, 73, 111);
+}
+
+.clickable {
+  cursor: pointer;
+  color: blue;
+}
+
+.clickable:hover {
+  text-decoration: underline;
+}
+
+.select-folder-button {
+  display: flex;
+  justify-content: center;
+}
+
+.year-row {
+  text-align: center;
+}
+
+.song-list {
+  padding-left: 10px;
+}
+
+.album-cover {
+  width: 150px;  /* Adjust as needed */
+  height: auto;
+  border-radius: 8px; /* Optional: Rounded corners */
+  margin-bottom: 10px;
+  display: block;
+}
