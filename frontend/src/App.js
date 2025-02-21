@@ -128,61 +128,66 @@ function App() {
         </div>
       ) : (
         <>
-          <div className="filters">
-            {(selectedArtist || selectedLabel || selectedYear) && (
-              <button className="back-button" onClick={handleBack}>
-                ⬅ Back
+          <div className="main-bar">
+            <div className="back-button-div">
+              {(selectedArtist || selectedLabel || selectedYear) && (
+                <button className="back-button" onClick={handleBack}>
+                  ⬅ Back
+                </button>
+              )}
+            </div>
+            <div className="filters">
+              <select
+                id="artistDropdown"
+                value={selectedArtist}
+                onChange={(e) => setSelectedArtist(e.target.value)}
+              >
+                <option value="">Artists</option>
+                {[...new Set(albums.map((a) => a.artist))]
+                  .sort((a, b) => a.localeCompare(b)) // Alphabetical order
+                  .map((artist) => (
+                    <option key={artist} value={artist}>
+                      {artist}
+                    </option>
+                  ))}
+              </select>
+
+              <select
+                id="labelDropdown"
+                value={selectedLabel}
+                onChange={(e) => setSelectedLabel(e.target.value)}
+              >
+                <option value="">Labels</option>
+                {[...new Set(albums.map((a) => a.labelName))]
+                  .sort((a, b) => a.localeCompare(b)) // Alphabetical order
+                  .map((label) => (
+                    <option key={label} value={label}>
+                      {label}
+                    </option>
+                  ))}
+              </select>
+
+              <select
+                id="yearDropdown"
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
+              >
+                <option value="">Years</option>
+                {[...new Set(albums.map((a) => a.year))]
+                  .sort((a, b) => b - a) // Sort in descending order (recent → old)
+                  .map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div>
+              {/* Rescan Button */}
+              <button id="rescanBtn" onClick={rescanFolder}>
+                Rescan
               </button>
-            )}
-            <select
-              id="artistDropdown"
-              value={selectedArtist}
-              onChange={(e) => setSelectedArtist(e.target.value)}
-            >
-              <option value="">Artists</option>
-              {[...new Set(albums.map((a) => a.artist))]
-                .sort((a, b) => a.localeCompare(b)) // Alphabetical order
-                .map((artist) => (
-                  <option key={artist} value={artist}>
-                    {artist}
-                  </option>
-                ))}
-            </select>
-
-            <select
-              id="labelDropdown"
-              value={selectedLabel}
-              onChange={(e) => setSelectedLabel(e.target.value)}
-            >
-              <option value="">Labels</option>
-              {[...new Set(albums.map((a) => a.labelName))]
-                .sort((a, b) => a.localeCompare(b)) // Alphabetical order
-                .map((label) => (
-                  <option key={label} value={label}>
-                    {label}
-                  </option>
-                ))}
-            </select>
-
-            <select
-              id="yearDropdown"
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(e.target.value)}
-            >
-              <option value="">Years</option>
-              {[...new Set(albums.map((a) => a.year))]
-                .sort((a, b) => b - a) // Sort in descending order (recent → old)
-                .map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-            </select>
-
-            {/* Rescan Button */}
-            <button id="rescanBtn" onClick={rescanFolder}>
-              Rescan
-            </button>
+            </div>
           </div>
 
           <div className="album-list-table">
