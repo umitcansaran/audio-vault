@@ -14,6 +14,17 @@ function App() {
   const [songs, setSongs] = useState({});
 
   useEffect(() => {
+    const loadLastFolder = async () => {
+      const lastPath = await window.electron.getLastFolder();
+      if (lastPath) {
+        setFolderPath(lastPath);
+        scanFolder(lastPath);
+      }
+    };
+    loadLastFolder();
+  }, []);
+  
+  useEffect(() => {
     if (!selectedArtist && !selectedLabel) {
       const artistDropdown = document.getElementById("artistDropdown");
       const labelDropdown = document.getElementById("labelDropdown");
@@ -182,8 +193,8 @@ function App() {
                   ))}
               </select>
             </div>
-            <div>
-              {/* Rescan Button */}
+            <div className="right-end-buttons">
+            <button className="select-folder-button" onClick={selectFolder}>Select Folder</button>
               <button id="rescanBtn" onClick={rescanFolder}>
                 Rescan
               </button>

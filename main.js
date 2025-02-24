@@ -1,6 +1,9 @@
 const { app, BrowserWindow, dialog, shell, ipcMain } = require("electron");
 const path = require("path");
 const fs = require("fs");
+const Store = require("electron-store");
+const store = new Store();
+
 
 let mainWindow;
 
@@ -8,6 +11,8 @@ app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    minWidth: 800,
+    minHeight: 600,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -16,29 +21,24 @@ app.whenReady().then(() => {
   });
 
   const isDev = process.env.NODE_ENV === "development";
-
   if (isDev) {
     mainWindow.loadURL("http://localhost:3000");
   } else {
-    mainWindow.loadFile(
-      path.join(__dirname, "frontend", "build", "index.html")
-    );
+    mainWindow.loadFile(path.join(__dirname, "frontend", "build", "index.html"));
   }
 
-  // Remove or comment out this block if not needed:
-  // mainWindow.webContents.on("will-navigate", (event, url) => {
-  //   event.preventDefault();
-  //   mainWindow.loadFile(path.join(__dirname, "frontend", "build", "index.html"));
-  // });
+  mainWindow.webContents.once("did-finish-load", () => {
+    const lastFolderPath = store.get("lastFolderPath", null);
+    if (lastFolderPath) {
+      mainWindow.webContents.send("load-last-folder", lastFolderPath);
+    }
+  });
 });
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
 
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") app.quit();
-});
 
 // Handle Folder Selection
 ipcMain.handle("select-folder", async () => {
@@ -47,9 +47,16 @@ ipcMain.handle("select-folder", async () => {
   });
 
   if (!result.canceled) {
-    return result.filePaths[0]; // Return selected folder
+    const folderPath = result.filePaths[0];
+    store.set("lastFolderPath", folderPath); // Save the path
+    return folderPath;
   }
   return null;
+});
+
+// Handle Fetching Last Folder Path
+ipcMain.handle("get-last-folder", async () => {
+  return store.get("lastFolderPath", null); // Retrieves the stored folder path
 });
 
 // Handle Scanning Music Folder
@@ -58,21 +65,17 @@ ipcMain.handle("scan-folder", async (_, folderPath) => {
 
   const files = fs.readdirSync(folderPath);
   const albums = files
-    .filter(
-      (name) => !name.startsWith("._") && name.match(/.*\(\d{4}\) \[.*\]/)
-    )
-    .map((name) => {
+    .filter(name => !name.startsWith("._") && name.match(/.*\(\d{4}\) \[.*\]/))
+    .map(name => {
       const match = name.match(/^(.*?) - (.*?) \((\d{4})\) \[(.*?) - (.*?)\]$/);
-      return match
-        ? {
-            artist: match[1],
-            title: match[2],
-            year: match[3],
-            labelCode: match[4],
-            labelName: match[5],
-            folderPath: path.join(folderPath, name),
-          }
-        : null;
+      return match ? {
+        artist: match[1],
+        title: match[2],
+        year: match[3],
+        labelCode: match[4],
+        labelName: match[5],
+        folderPath: path.join(folderPath, name),
+      } : null;
     })
     .filter(Boolean);
 
