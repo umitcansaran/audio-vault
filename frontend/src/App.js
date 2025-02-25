@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import AlbumCover from "./AlbumCover";
 
 function App() {
   const [folderPath, setFolderPath] = useState("");
@@ -23,7 +24,7 @@ function App() {
     };
     loadLastFolder();
   }, []);
-  
+
   useEffect(() => {
     if (!selectedArtist && !selectedLabel) {
       const artistDropdown = document.getElementById("artistDropdown");
@@ -131,181 +132,180 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Audio Vault</h1>
-
-      {!folderPath ? (
-        <div className="select-folder-button">
-          <button onClick={selectFolder}>Select Folder</button>
+      <div className="main-bar">
+        <div className="back-button-div">
+          {(selectedArtist || selectedLabel || selectedYear) && (
+            <button className="back-button" onClick={handleBack}>
+              ⬅ Back
+            </button>
+          )}
         </div>
-      ) : (
-        <>
-          <div className="main-bar">
-            <div className="back-button-div">
-              {(selectedArtist || selectedLabel || selectedYear) && (
-                <button className="back-button" onClick={handleBack}>
-                  ⬅ Back
-                </button>
-              )}
-            </div>
-            <div className="filters">
-              <select
-                id="artistDropdown"
-                value={selectedArtist}
-                onChange={(e) => setSelectedArtist(e.target.value)}
-              >
-                <option value="">Artists</option>
-                {[...new Set(albums.map((a) => a.artist))]
-                  .sort((a, b) => a.localeCompare(b)) // Alphabetical order
-                  .map((artist) => (
-                    <option key={artist} value={artist}>
-                      {artist}
-                    </option>
-                  ))}
-              </select>
+        <div className="filters">
+          <select
+            id="artistDropdown"
+            value={selectedArtist}
+            onChange={(e) => setSelectedArtist(e.target.value)}
+          >
+            <option value="">Artists</option>
+            {[...new Set(albums.map((a) => a.artist))]
+              .sort((a, b) => a.localeCompare(b)) // Alphabetical order
+              .map((artist) => (
+                <option key={artist} value={artist}>
+                  {artist}
+                </option>
+              ))}
+          </select>
 
-              <select
-                id="labelDropdown"
-                value={selectedLabel}
-                onChange={(e) => setSelectedLabel(e.target.value)}
-              >
-                <option value="">Labels</option>
-                {[...new Set(albums.map((a) => a.labelName))]
-                  .sort((a, b) => a.localeCompare(b)) // Alphabetical order
-                  .map((label) => (
-                    <option key={label} value={label}>
-                      {label}
-                    </option>
-                  ))}
-              </select>
+          <select
+            id="labelDropdown"
+            value={selectedLabel}
+            onChange={(e) => setSelectedLabel(e.target.value)}
+          >
+            <option value="">Labels</option>
+            {[...new Set(albums.map((a) => a.labelName))]
+              .sort((a, b) => a.localeCompare(b)) // Alphabetical order
+              .map((label) => (
+                <option key={label} value={label}>
+                  {label}
+                </option>
+              ))}
+          </select>
 
-              <select
-                id="yearDropdown"
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(e.target.value)}
-              >
-                <option value="">Years</option>
-                {[...new Set(albums.map((a) => a.year))]
-                  .sort((a, b) => b - a) // Sort in descending order (recent → old)
-                  .map((year) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
-              </select>
-            </div>
-            <div className="right-end-buttons">
-            <button className="select-folder-button" onClick={selectFolder}>Select Folder</button>
-              <button id="rescanBtn" onClick={rescanFolder}>
-                Rescan
-              </button>
-            </div>
-          </div>
+          <select
+            id="yearDropdown"
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
+          >
+            <option value="">Years</option>
+            {[...new Set(albums.map((a) => a.year))]
+              .sort((a, b) => b - a) // Sort in descending order (recent → old)
+              .map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+          </select>
+        </div>
+        <div className="right-end-buttons">
+          <button className="select-folder-button" onClick={selectFolder}>
+            Select Folder
+          </button>
+          <button id="rescanBtn" onClick={rescanFolder}>
+            Rescan
+          </button>
+        </div>
+      </div>
 
-          <div className="album-list-table">
-            <table>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th onClick={() => handleSort("artist")}>
-                    Artist{" "}
-                    {sortColumn === "artist"
-                      ? sortDirection === "asc"
-                        ? "▲"
-                        : "▼"
-                      : ""}
-                  </th>
-                  <th>Title</th>
-                  <th
-                    className="year-column"
-                    onClick={() => handleSort("year")}
-                  >
-                    Year{" "}
-                    {sortColumn === "year"
-                      ? sortDirection === "asc"
-                        ? "▲"
-                        : "▼"
-                      : ""}
-                  </th>
-                  <th onClick={() => handleSort("labelCode")}>
-                    Code{" "}
-                    {sortColumn === "labelCode"
-                      ? sortDirection === "asc"
-                        ? "▲"
-                        : "▼"
-                      : ""}
-                  </th>
-                  <th onClick={() => handleSort("labelName")}>
-                    Label{" "}
-                    {sortColumn === "labelName"
-                      ? sortDirection === "asc"
-                        ? "▲"
-                        : "▼"
-                      : ""}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredAlbums.map((album, index) => (
-                  <>
-                    <tr
-                      key={index}
-                      onClick={() =>
-                        window.electron.openFolder(album.folderPath)
-                      }
+      <div className="album-list-table">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th onClick={() => handleSort("artist")}>
+                Artist{" "}
+                {sortColumn === "artist"
+                  ? sortDirection === "asc"
+                    ? "▲"
+                    : "▼"
+                  : ""}
+              </th>
+              <th>Title</th>
+              <th className="year-column" onClick={() => handleSort("year")}>
+                Year{" "}
+                {sortColumn === "year"
+                  ? sortDirection === "asc"
+                    ? "▲"
+                    : "▼"
+                  : ""}
+              </th>
+              <th onClick={() => handleSort("labelCode")}>
+                Code{" "}
+                {sortColumn === "labelCode"
+                  ? sortDirection === "asc"
+                    ? "▲"
+                    : "▼"
+                  : ""}
+              </th>
+              <th onClick={() => handleSort("labelName")}>
+                Label{" "}
+                {sortColumn === "labelName"
+                  ? sortDirection === "asc"
+                    ? "▲"
+                    : "▼"
+                  : ""}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredAlbums.map((album, index) => (
+              <>
+                <tr
+                  key={index}
+                  onClick={() => window.electron.openFolder(album.folderPath)}
+                >
+                  <td>
+                    <button
+                      className="toggle-album"
+                      onClick={(e) => toggleAlbum(e, album)}
                     >
-                      <td>
-                        <button onClick={(e) => toggleAlbum(e, album)}>
-                          {expandedAlbum === album.folderPath ? "−" : "+"}
-                        </button>
-                      </td>
-                      <td
-                        className="album-list clickable"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleArtistClick(album.artist);
-                        }}
-                      >
-                        {album.artist}
-                      </td>
-                      <td className="album-list">{album.title}</td>
-                      <td className="album-list year-row">{album.year}</td>
-                      <td className="album-list">{album.labelCode}</td>
-                      <td
-                        className="album-list clickable"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleLabelClick(album.labelName);
-                        }}
-                      >
-                        {album.labelName}
-                      </td>
-                    </tr>
-                    {expandedAlbum === album.folderPath && (
-                      <tr>
-                        <td colSpan="6">
-                          <div className="song-list">
-                            {songs[album.folderPath]?.map((song, idx) => (
-                              <p
-                                key={idx}
-                                onClick={() =>
-                                  playSong(`${album.folderPath}/${song}`)
-                                }
-                                className="clickable-song"
-                              >
-                                {song}
-                              </p>
-                            ))}
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
-      )}
+                      {expandedAlbum === album.folderPath ? "−" : "+"}
+                    </button>
+                  </td>
+                  <td
+                    className="album-list clickable"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleArtistClick(album.artist);
+                    }}
+                  >
+                    {album.artist}
+                  </td>
+                  <td className="album-list">{album.title}</td>
+                  <td className="album-list year-row">{album.year}</td>
+                  <td className="album-list">{album.labelCode}</td>
+                  <td
+                    className="album-list clickable"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLabelClick(album.labelName);
+                    }}
+                  >
+                    {album.labelName}
+                  </td>
+                </tr>
+                {expandedAlbum === album.folderPath && (
+                  <tr>
+                    <td colSpan="3" className="expanded-album">
+                      <div className="album-cover-wrapper">
+                        <img
+                          className="album-cover"
+                          src={`file://${album.folderPath}/cover.jpg`}
+                          alt={`${album.title} Cover`}
+                        />
+                      </div>
+                    </td>
+                    <td colSpan="4" className="expanded-album">
+                      <div className="song-list">
+                        {songs[album.folderPath]?.map((song, idx) => (
+                          <p
+                            key={idx}
+                            onClick={() =>
+                              playSong(`${album.folderPath}/${song}`)
+                            }
+                            className="clickable-song"
+                          >
+                            {song}
+                          </p>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

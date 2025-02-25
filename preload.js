@@ -7,4 +7,5 @@ contextBridge.exposeInMainWorld("electron", {
   openFolder: (path) => ipcRenderer.invoke("open-folder", path),
   openFile: (filePath) => ipcRenderer.invoke("open-file", filePath),
   getSongsInFolder: (folderPath) => ipcRenderer.invoke("getSongsInFolder", folderPath),
+  getCoverImage: (folderPath) => ipcRenderer.invoke("get-cover-image", folderPath),
 });

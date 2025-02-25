@@ -16,8 +16,8 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url(../image/5.jpg) center/cover no-repeat;
-  background-color: rgb(136, 136, 136);
+  /* background: url(../image/5.jpg) center/cover no-repeat; */
+  background-color: rgb(19, 19, 19);
   opacity: 0.9; /* Adjust this for transparency */
   z-index: -1;
 }
@@ -29,12 +29,12 @@ code {
 
 .container {
   font-family: Arial, sans-serif;
-  width: 95vw !important; 
+  width: 98vw !important;
 }
 
 .main-bar {
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
 }
 
 .filters {
@@ -80,10 +80,10 @@ th {
 .album-list-table {
   background-color: rgba(51, 53, 53, 0.692);
   width: auto;
+  padding: 5px;
 }
 
 .container {
-  width: 80%;
   margin: auto;
   font-family: Arial, sans-serif;
 }
@@ -118,6 +118,7 @@ select {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 #rescanBtn,
@@ -141,12 +142,7 @@ select {
   display: flex;
   align-items: center;
   white-space: nowrap;
-}
-
-.back-button:hover,
-#rescanBtn:hover,
-.select-folder-button:hover  {
-  background-color: rgb(73, 73, 111);
+  margin-top: 10px;
 }
 
 .clickable {
@@ -170,20 +166,31 @@ select {
 
 .song-list {
   padding-left: 45px;
+  color: rgb(160, 164, 167);
 }
 
 .album-cover {
-  width: 150px; /* Adjust as needed */
-  height: auto;
-  border-radius: 8px; /* Optional: Rounded corners */
-  margin-bottom: 10px;
-  display: block;
+  width: 100%; /* Make it scale to the column size */
+  max-width: 500px; /* Prevent it from getting too large */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover; /* Ensure it fills the available space properly */
 }
 
 .clickable-song:hover {
-  color: rgb(86, 20, 148);
+  color: rgb(179, 179, 179);
 }
 
 .right-end-buttons {
   display: flex;
+}
+
+.album-cover-wrapper {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically (optional) */
+  width: 100%;
+}
+
+.expanded-album {
+  background-color: rgb(54, 54, 54);
 }

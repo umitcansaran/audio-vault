@@ -1,13 +1,28 @@
-const { app, BrowserWindow, dialog, shell, ipcMain } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  dialog,
+  shell,
+  ipcMain,
+  protocol,
+} = require("electron");
 const path = require("path");
 const fs = require("fs");
 const Store = require("electron-store");
 const store = new Store();
 
-
 let mainWindow;
 
 app.whenReady().then(() => {
+  // protocol.handle("local", async (request) => {
+  //   const filePath = request.url.replace("local://", "");
+  //   try {
+  //     return net.fetch(`file://${filePath}`);
+  //   } catch (error) {
+  //     console.error("Failed to load local file:", error);
+  //     return null;
+  //   }
+  // });
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -16,7 +31,8 @@ app.whenReady().then(() => {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.join(__dirname, "preload.js"),
+      preload: path.join(__dirname, "preload.js"), // Make sure preload is properly configured
+      webSecurity: false,
     },
   });
 
@@ -35,10 +51,22 @@ app.whenReady().then(() => {
   });
 });
 
+ipcMain.handle("get-cover-image", async (event, folderPath) => {
+  if (!folderPath) return null;
+
+  const coverPath = path.join(folderPath, "cover.jpg");
+
+  if (fs.existsSync(coverPath)) {
+    return `local://${coverPath}`; // ✅ Use "local://" protocol
+  } else {
+    return null;
+  }
+});
+
+
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
-
 
 // Handle Folder Selection
 ipcMain.handle("select-folder", async () => {
@@ -65,17 +93,21 @@ ipcMain.handle("scan-folder", async (_, folderPath) => {
 
   const files = fs.readdirSync(folderPath);
   const albums = files
-    .filter(name => !name.startsWith("._") && name.match(/.*\(\d{4}\) \[.*\]/))
-    .map(name => {
+    .filter(
+      (name) => !name.startsWith("._") && name.match(/.*\(\d{4}\) \[.*\]/)
+    )
+    .map((name) => {
       const match = name.match(/^(.*?) - (.*?) \((\d{4})\) \[(.*?) - (.*?)\]$/);
-      return match ? {
-        artist: match[1],
-        title: match[2],
-        year: match[3],
-        labelCode: match[4],
-        labelName: match[5],
-        folderPath: path.join(folderPath, name),
-      } : null;
+      return match
+        ? {
+            artist: match[1],
+            title: match[2],
+            year: match[3],
+            labelCode: match[4],
+            labelName: match[5],
+            folderPath: path.join(folderPath, name),
+          }
+        : null;
     })
     .filter(Boolean);
 
@@ -85,9 +117,10 @@ ipcMain.handle("scan-folder", async (_, folderPath) => {
 // Handle Getting Songs In Music Folder
 ipcMain.handle("getSongsInFolder", async (event, folderPath) => {
   try {
-    const files = fs.readdirSync(folderPath)
-      .filter(file => file.endsWith(".mp3") || file.endsWith(".flac")) 
-      .filter(name => !name.startsWith("._"))
+    const files = fs
+      .readdirSync(folderPath)
+      .filter((file) => file.endsWith(".mp3") || file.endsWith(".flac"))
+      .filter((name) => !name.startsWith("._"))
       .sort((a, b) => a.localeCompare(b));
     return files;
   } catch (error) {
