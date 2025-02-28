@@ -12,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "@electron/remote": "^2.1.2",
+    "bootstrap": "^5.3.3",
     "electron-packager": "^17.1.2",
-    "electron-store": "^7.0.0"
+    "electron-store": "^7.0.0",
+    "react-bootstrap": "^2.10.9"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.21.0",

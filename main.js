@@ -40,7 +40,9 @@ app.whenReady().then(() => {
   if (isDev) {
     mainWindow.loadURL("http://localhost:3000");
   } else {
-    mainWindow.loadFile(path.join(__dirname, "frontend", "build", "index.html"));
+    mainWindow.loadFile(
+      path.join(__dirname, "frontend", "build", "index.html")
+    );
   }
 
   mainWindow.webContents.once("did-finish-load", () => {
@@ -49,6 +51,21 @@ app.whenReady().then(() => {
       mainWindow.webContents.send("load-last-folder", lastFolderPath);
     }
   });
+});
+
+// IPC handler to read songs from a folder
+ipcMain.handle("get-songs", async (event, folderPath) => {
+  try {
+    const files = await fs.promises.readdir(folderPath);
+    const audioFiles = files.filter(
+      (file) => file.endsWith(".mp3") || file.endsWith(".flac")
+    );
+
+    return audioFiles; // Send the list of songs back to React
+  } catch (error) {
+    console.error("Error reading folder:", error);
+    return [];
+  }
 });
 
 ipcMain.handle("get-cover-image", async (event, folderPath) => {
@@ -62,7 +79,6 @@ ipcMain.handle("get-cover-image", async (event, folderPath) => {
     return null;
   }
 });
-
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();

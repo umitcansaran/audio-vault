@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import AlbumCover from "./AlbumCover";
+import AudioPlayer from "./AudioPlayer";
 
 function App() {
   const [folderPath, setFolderPath] = useState("");
@@ -13,6 +13,8 @@ function App() {
   const [prevFilter, setPrevFilter] = useState({ artist: "", label: "" });
   const [expandedAlbum, setExpandedAlbum] = useState(null);
   const [songs, setSongs] = useState({});
+  const [labelImages, setLabelImages] = useState({});
+  const [currentSong, setCurrentSong] = useState(null); // Track the currently playing song
 
   useEffect(() => {
     const loadLastFolder = async () => {
@@ -108,6 +110,45 @@ function App() {
     setSelectedYear("");
   };
 
+  const fetchLabelImageFromFolder = async (album) => {
+    const apiKey = process.env.REACT_APP_DISCOGS_API_KEY; // Correct way to access the environment variable
+
+    // Regular Expression to Extract Details
+    // const folderRegex = /^(.+?) - (.+?) \((\d{4})\) \[(.+?) - (.+?)\]$/;
+    // const match = folderName.match(folderRegex);
+
+    // if (!match) {
+    //   console.error("Folder name format does not match expected pattern.");
+    //   return null;
+    // }
+
+    // const artist = match[1].trim();
+    // const album = match[2].trim();
+    // const label = match[5].trim();
+
+    // console.log(`Extracted: Artist=${artist}, Album=${album}, Label=${label}`);
+
+    // API Call to Discogs to Get Label Image
+    // const url = `https://api.discogs.com/database/search?release_title=${encodeURIComponent(album.title)}&artist=${encodeURIComponent(album.artist)}&label=${encodeURIComponent(album.labelName)}&type=release&token=${apiKey}`;
+    const url = `https://api.discogs.com/database/search?catno=${encodeURIComponent(
+      album.labelCode
+    )}&type=release&token=${apiKey}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.results.length > 0) {
+        const result = data.results[0].cover_image; // First matching label image
+        return result;
+      }
+    } catch (error) {
+      console.error("Error fetching label image:", error);
+    }
+
+    return null;
+  };
+
   const toggleAlbum = async (event, album) => {
     event.stopPropagation(); // Prevents the row click event from triggering
     if (expandedAlbum === album.folderPath) {
@@ -123,11 +164,19 @@ function App() {
         }));
       }
       setExpandedAlbum(album.folderPath);
+
+      // Reset the image to show "Loading..." before fetching new one
+      setLabelImages((prev) => ({ ...prev, [album.folderPath]: null }));
+
+      const imageUrl = await fetchLabelImageFromFolder(album);
+      setLabelImages((prev) => ({ ...prev, [album.folderPath]: imageUrl }));
     }
   };
 
-  const playSong = async (filePath) => {
-    await window.electron.openFile(filePath);
+  const playSong = async (albumFolderPath, songName) => {
+    const filePath = `${albumFolderPath}/${songName}`; // Construct the full file path
+    setCurrentSong(filePath); // Set the song path to the currently playing song
+    // await window.electron.openFile(filePath); // Trigger Electron to open the file
   };
 
   return (
@@ -277,27 +326,26 @@ function App() {
                   <tr>
                     <td colSpan="3" className="expanded-album">
                       <div className="album-cover-wrapper">
-                        <img
-                          className="album-cover"
-                          src={`file://${album.folderPath}/cover.jpg`}
-                          alt={`${album.title} Cover`}
-                        />
+                        {labelImages[album.folderPath] === null ? (
+                          <p style={{ color: "grey" }}>Loading...</p>
+                        ) : labelImages[album.folderPath] ? (
+                          <img
+                            className="album-cover"
+                            src={labelImages[album.folderPath]}
+                            alt={`${album.title} Cover`}
+                          />
+                        ) : (
+                          //   <img
+                          //   className="album-cover"
+                          //   src={`file://${album.folderPath}/cover.jpg`}
+                          //   alt={`${album.title} Cover`}
+                          // />
+                          <p>No label image available</p>
+                        )}
                       </div>
                     </td>
                     <td colSpan="4" className="expanded-album">
-                      <div className="song-list">
-                        {songs[album.folderPath]?.map((song, idx) => (
-                          <p
-                            key={idx}
-                            onClick={() =>
-                              playSong(`${album.folderPath}/${song}`)
-                            }
-                            className="clickable-song"
-                          >
-                            {song}
-                          </p>
-                        ))}
-                      </div>
+                      <AudioPlayer album={album} currentSong={currentSong} />
                     </td>
                   </tr>
                 )}
