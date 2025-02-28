@@ -201,22 +201,24 @@ select {
 .album-cover-wrapper {
   display: flex;
   justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically (optional) */
-  height: 500px; /* Prevent it from getting too large */
+  align-items: start; /* Center vertically (optional) */
+  height: auto; /* Prevent it from getting too large */
   margin-bottom: 10px;
 }
 
 .expanded-album {
   background-color: rgb(54, 54, 54);
+  display: column;
+  align-content: start;
 }
 
 .playBtn,
 .prevBtn,
 .nextBtn {
   margin-right: 7px;
-  font-size: medium;
-  width: 80px;
-  height: 40px;
+  font-size: small;
+  width: 50px;
+  height: 35px;
   background-color: rgba(73, 73, 111, 0.807);
   color: white;
   border: none;
@@ -235,14 +237,12 @@ select {
 }
 
 .audio-player {
-  margin-left: 25px;
+  margin-left: 40px;
 }
 
 .expanded-cell {
   background-color: rgb(54, 54, 54);
-  transition: background-color 0.3s ease-in-out;
   color: rgb(54, 54, 54);
-  text-align: center;
 }
 
 .expanded-album-info {

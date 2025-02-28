@@ -353,7 +353,8 @@ function App() {
                 </tr>
                 {expandedAlbum === album.folderPath && (
                   <tr>
-                    <td colSpan="3" className="expanded-album">
+                    <td className="expanded-album"></td>
+                    <td colSpan="2" className="expanded-album">
                       <div className="album-cover-wrapper">
                         {labelImages[album.folderPath] === null ? (
                           <p style={{ color: "grey" }}>Loading...</p>
@@ -364,11 +365,6 @@ function App() {
                             alt={`${album.title} Cover`}
                           />
                         ) : (
-                          //   <img
-                          //   className="album-cover"
-                          //   src={`file://${album.folderPath}/cover.jpg`}
-                          //   alt={`${album.title} Cover`}
-                          // />
                           <p>No label image available</p>
                         )}
                       </div>

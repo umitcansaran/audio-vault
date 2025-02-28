@@ -99,7 +99,6 @@ const AudioPlayer = ({ album, currentSong }) => {
           {new Date(duration * 1000).toISOString().substr(14, 5)}
         </div>
       ) : null}
-
       <button className="playBtn" onClick={playPauseHandler}>
         {isPlaying ? "⏸" : "▶"}
       </button>
