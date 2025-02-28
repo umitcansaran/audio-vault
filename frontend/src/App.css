@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgba(89, 89, 89, 0.465);
+  background-color: rgb(64, 64, 64);
   position: relative;
 }
 
@@ -17,7 +17,7 @@ body::before {
   width: 100%;
   height: 100%;
   /* background: url(../image/5.jpg) center/cover no-repeat; */
-  background-color: rgb(19, 19, 19);
+  background-color: rgb(54, 54, 54);
   opacity: 0.9; /* Adjust this for transparency */
   z-index: -1;
 }
@@ -165,7 +165,7 @@ select {
 }
 
 .song-list {
-  margin-top: 20px;
+  margin-top: 30px;
   color: rgb(160, 164, 167);
 }
 
@@ -178,16 +178,20 @@ select {
 
 .clickable-song {
   cursor: pointer;
-  color: rgb(197, 196, 196);
+  color: rgb(205, 205, 205);
+}
+
+.song-duration {
+  color: rgb(205, 205, 205);
 }
 
 .clickable-song:hover {
-  color: rgb(222, 219, 219);
+  color: rgb(169, 169, 169);
 }
 
 .clickable-song.playing {
   font-weight: bold;
-  color: rgb(137, 137, 195);
+  color: rgb(160, 160, 214);
 }
 
 .right-end-buttons {
@@ -199,6 +203,7 @@ select {
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically (optional) */
   height: 500px; /* Prevent it from getting too large */
+  margin-bottom: 10px;
 }
 
 .expanded-album {
@@ -208,7 +213,6 @@ select {
 .playBtn,
 .prevBtn,
 .nextBtn {
-  margin-top: 15px;
   margin-right: 7px;
   font-size: medium;
   width: 80px;
@@ -232,4 +236,24 @@ select {
 
 .audio-player {
   margin-left: 25px;
+}
+
+.expanded-cell {
+  background-color: rgb(54, 54, 54);
+  transition: background-color 0.3s ease-in-out;
+  color: rgb(54, 54, 54);
+  text-align: center;
+}
+
+.expanded-album-info {
+  color: rgba(153, 153, 210, 0.807);
+  font-size: x-large;
+  margin-bottom: 0px;
+}
+
+.expanded-album-label {
+  color: rgb(149, 149, 149);
+  font-size: medium;
+  margin-top: 7px;
+  margin-bottom: 20px;
 }

@@ -291,8 +291,15 @@ function App() {
                 <tr
                   key={index}
                   onClick={() => window.electron.openFolder(album.folderPath)}
+                  className={
+                    expandedAlbum === album.folderPath ? "expanded-row" : ""
+                  }
                 >
-                  <td>
+                  <td
+                    className={
+                      expandedAlbum === album.folderPath ? "expanded-cell" : ""
+                    }
+                  >
                     <button
                       className="toggle-album"
                       onClick={(e) => toggleAlbum(e, album)}
@@ -301,7 +308,9 @@ function App() {
                     </button>
                   </td>
                   <td
-                    className="album-list clickable"
+                    className={`album-list clickable ${
+                      expandedAlbum === album.folderPath ? "expanded-cell" : ""
+                    }`}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleArtistClick(album.artist);
@@ -309,11 +318,31 @@ function App() {
                   >
                     {album.artist}
                   </td>
-                  <td className="album-list">{album.title}</td>
-                  <td className="album-list year-row">{album.year}</td>
-                  <td className="album-list">{album.labelCode}</td>
                   <td
-                    className="album-list clickable"
+                    className={`album-list ${
+                      expandedAlbum === album.folderPath ? "expanded-cell" : ""
+                    }`}
+                  >
+                    {album.title}
+                  </td>
+                  <td
+                    className={`album-list year-row ${
+                      expandedAlbum === album.folderPath ? "expanded-cell" : ""
+                    }`}
+                  >
+                    {album.year}
+                  </td>
+                  <td
+                    className={`album-list ${
+                      expandedAlbum === album.folderPath ? "expanded-cell" : ""
+                    }`}
+                  >
+                    {album.labelCode}
+                  </td>
+                  <td
+                    className={`album-list clickable ${
+                      expandedAlbum === album.folderPath ? "expanded-cell" : ""
+                    }`}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleLabelClick(album.labelName);

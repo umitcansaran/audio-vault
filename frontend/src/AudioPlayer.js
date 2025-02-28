@@ -80,14 +80,12 @@ const AudioPlayer = ({ album, currentSong }) => {
 
   return (
     <div className="audio-player">
-      {tracks.length > 0 && currentTrackIndex !== null ? (
-        <p style={{ color: "white" }}>
-          {tracks[currentTrackIndex].title.replace(/^\d+\.\s*|\.flac$/gi, "")}
-        </p>
-      ) : (
-        <p style={{ color: "white" }}>No song playing</p>
-      )}
-
+      <p className="expanded-album-info">
+        {album.artist} - {album.title}
+      </p>
+      <p className="expanded-album-label">
+        &copy; {album.year} {album.labelName}
+      </p>
       <audio
         ref={audioRef}
         onEnded={nextTrack}
@@ -95,10 +93,13 @@ const AudioPlayer = ({ album, currentSong }) => {
         onLoadedMetadata={onLoadedMetadata}
       ></audio>
 
-      <div style={{ color: "white" }}>
-        {new Date(currentTime * 1000).toISOString().substr(14, 5)} /
-        {new Date(duration * 1000).toISOString().substr(14, 5)}
-      </div>
+      {tracks.length > 0 && currentTrackIndex !== null ? (
+        <div className="song-duration">
+          {new Date(currentTime * 1000).toISOString().substr(14, 5)} /
+          {new Date(duration * 1000).toISOString().substr(14, 5)}
+        </div>
+      ) : null}
+
       <button className="playBtn" onClick={playPauseHandler}>
         {isPlaying ? "⏸" : "▶"}
       </button>
