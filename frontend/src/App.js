@@ -68,13 +68,13 @@ function App() {
   const filteredAlbums = albums
     .filter(
       (album) =>
-        album.artist.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        album.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        album.labelCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (album.labelName.toLowerCase().includes(searchTerm.toLowerCase()) &&
-          (selectedArtist ? album.artist === selectedArtist : true) &&
-          (selectedLabel ? album.labelName === selectedLabel : true) &&
-          (selectedYear ? album.year === selectedYear : true))
+        (selectedArtist ? album.artist === selectedArtist : true) &&
+        (selectedLabel ? album.labelName === selectedLabel : true) &&
+        (selectedYear ? album.year === selectedYear : true) &&
+        (album.artist.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          album.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          album.labelCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          album.labelName.toLowerCase().includes(searchTerm.toLowerCase()))
     )
     .sort((a, b) => {
       if (!sortColumn) return 0;
@@ -255,7 +255,6 @@ function App() {
           </button>
         </div>
       </div>
-
       <div className="album-list-table">
         <table>
           <thead>

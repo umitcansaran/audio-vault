@@ -24,10 +24,10 @@ app.whenReady().then(() => {
   //   }
   // });
   mainWindow = new BrowserWindow({
-    width: 1150,
+    width: 1200,
     height: 700,
-    minWidth: 900,
-    minHeight: 600,
+    minWidth: 1050,
+    minHeight: 500,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
