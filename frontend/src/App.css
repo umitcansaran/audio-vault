@@ -1,6 +1,7 @@
 body {
   margin: 0;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #333;
@@ -15,9 +16,8 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  /* background: url(../image/5.jpg) center/cover no-repeat; */
   background-color: rgb(33, 33, 33);
-  opacity: 0.9; /* Adjust this for transparency */
+  opacity: 0.9;
   z-index: -1;
 }
 
@@ -46,14 +46,6 @@ code {
   flex-shrink: 0; /* Prevents shrinking */
   width: auto; /* Adjusts based on button size */
   margin-right: 10px;
-}
-
-select,
-button {
-  padding: 8px;
-  font-size: 16px;
-  background-color: rgba(73, 73, 111, 0.372);
-  color: aliceblue;
 }
 
 .album-list {
@@ -89,9 +81,10 @@ th {
 }
 
 select,
-button {
+button,
+.search-input {
   padding: 8px;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .album-list {
@@ -101,25 +94,35 @@ button {
   max-width: 35vw;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: rgb(232, 232, 232) !important;
+  color: rgb(183, 183, 183) !important;
 }
 
-/* h1 {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  color: rgb(73, 73, 111);
-  text-align: center;
-  text-shadow: 3px 3px 0 #000, -3px 3px 0 #000, -3px -3px 0 #000,
-    3px -3px 0 #000;
-} */
-
-select {
+select,
+.search-input {
   padding: 8px 12px;
   background-color: #333; /* Lighter row */
-  color: white;
+  color: rgb(185, 185, 185);
   border: none;
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+}
+
+select:focus,
+.search-input:focus {
+  outline: none;
+  border-color: #999; /* Optional: Slightly darker border */
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2); /* Inner shadow effect */
+}
+
+.search-input {
+  width: auto;
+  padding-left: 30px; /* Make space for the icon */
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray"><path fill-rule="evenodd" d="M8.5 2a6.5 6.5 0 0 1 5.2 10.36l3.47 3.47a1 1 0 1 1-1.42 1.42l-3.47-3.47A6.5 6.5 0 1 1 8.5 2zm0 2a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z" clip-rule="evenodd"/></svg>')
+    no-repeat 10px center;
+  background-size: 16px;
+  border: 0.5px solid #8d8d8d9d;
+  box-shadow: 0 0 5px rgba(70, 70, 70, 0.663); /* Optional: Add a glow effect */
 }
 
 #rescanBtn,
@@ -134,7 +137,8 @@ select {
 .select-folder-button {
   padding: 8px 12px;
   background-color: #333; /* Lighter row */
-  color: white;
+  color: rgb(185, 185, 185);
+  font-size: 14px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -148,7 +152,6 @@ select {
 
 .clickable {
   cursor: pointer;
-  /* color: rgb(86, 20, 148); */
   color: rgb(212, 212, 212);
 }
 
@@ -188,12 +191,11 @@ select {
 }
 
 .clickable-song:hover {
-  color: rgb(169, 169, 169);
+  color: rgb(120, 120, 120);
 }
 
 .clickable-song.playing {
-  font-weight: bold;
-  color: rgb(160, 160, 214);
+  color: rgb(120, 120, 120);
 }
 
 .right-end-buttons {
@@ -202,7 +204,8 @@ select {
 
 .toggle-album {
   padding: 1px 8px;
-  color: rgb(172, 172, 172);
+  background-color: rgba(255, 255, 255, 0);
+  color: rgb(255, 255, 255);
   border: none;
   border-radius: 3px;
   cursor: pointer;
@@ -210,15 +213,14 @@ select {
 
 .album-cover-wrapper {
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: start; /* Center vertically (optional) */
-  height: auto; /* Prevent it from getting too large */
+  justify-content: center;
+  align-items: start;
+  height: auto;
   margin-bottom: 10px;
 }
 
 .expanded-album {
-  /* background-color: rgb(54, 54, 54); */
-  background-color: #222; /* Darker row */
+  background-color: #222;
   display: column;
   align-content: start;
 }
@@ -248,11 +250,10 @@ select {
 }
 
 .expanded-cell {
-  /* background-color: rgb(54, 54, 54); */
-  background-color: #222 !important; /* Darker row */
+  background-color: #222 !important;
   color: rgb(54, 54, 54);
-  color: transparent !important; /* Make text invisible */
-  pointer-events: none; /* Disable interaction */
+  color: transparent !important;
+  pointer-events: none;
 }
 
 .expanded-album-info {
@@ -266,14 +267,6 @@ select {
   font-size: medium;
   margin-top: 7px;
   margin-bottom: 20px;
-}
-
-tbody tr:nth-child(odd) {
-  background-color: #222; /* Darker row */
-}
-
-tbody tr:nth-child(even) {
-  background-color: #333; /* Lighter row */
 }
 
 tbody tr {
@@ -290,13 +283,12 @@ table {
   appearance: none;
   width: 100%;
   height: 6px;
-  background: #555; /* Track color */
+  background: #555;
   border-radius: 3px;
   outline: none;
   transition: opacity 0.2s;
 }
 
-/* WebKit (Chrome, Safari) */
 .audioInput::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -311,11 +303,10 @@ table {
   width: 250px;
 }
 
-.waveform {
-  width: 100%;
-  height: 50px;
-  background: #222; /* Background color */
-  border-radius: 5px;
+.row-dark {
+  background-color: #222;
 }
 
-
+.row-light {
+  background-color: #333;
+}

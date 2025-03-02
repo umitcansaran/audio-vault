@@ -92,13 +92,14 @@ const AudioPlayer = ({ album, currentSong }) => {
         onTimeUpdate={onTimeUpdate}
         onLoadedMetadata={onLoadedMetadata}
       ></audio>
-
       {tracks.length > 0 && currentTrackIndex !== null ? (
         <div className="song-duration">
-          {new Date(currentTime * 1000).toISOString().substr(14, 5)} /
+          {new Date(currentTime * 1000).toISOString().substr(14, 5)} /{" "}
           {new Date(duration * 1000).toISOString().substr(14, 5)}
         </div>
-      ) : null}
+      ) : (
+        <div> 00:00 / 00:00 </div>
+      )}
       <button className="playBtn" onClick={playPauseHandler}>
         {isPlaying ? "⏸" : "▶"}
       </button>
