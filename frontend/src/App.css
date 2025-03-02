@@ -1,12 +1,11 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(64, 64, 64);
+  background-color: #333;
   position: relative;
+  font-size: 14px;
 }
 
 body::before {
@@ -17,7 +16,7 @@ body::before {
   width: 100%;
   height: 100%;
   /* background: url(../image/5.jpg) center/cover no-repeat; */
-  background-color: rgb(54, 54, 54);
+  background-color: rgb(33, 33, 33);
   opacity: 0.9; /* Adjust this for transparency */
   z-index: -1;
 }
@@ -69,18 +68,19 @@ tr {
 }
 
 td {
-  background-color: rgb(187, 186, 186);
-  color: rgb(33, 48, 79);
+  color: rgb(212, 212, 212);
 }
 
 th {
   color: rgba(255, 255, 255, 0.8);
+  border-bottom: 1.5px solid #333;
+  padding-bottom: 4px;
+  padding-top: 2px;
 }
 
 .album-list-table {
-  background-color: rgba(51, 53, 53, 0.692);
+  background-color: #222; /* Darker row */
   width: auto;
-  padding: 5px;
 }
 
 .container {
@@ -101,19 +101,20 @@ button {
   max-width: 35vw;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: rgb(232, 232, 232) !important;
 }
 
-h1 {
+/* h1 {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   color: rgb(73, 73, 111);
   text-align: center;
   text-shadow: 3px 3px 0 #000, -3px 3px 0 #000, -3px -3px 0 #000,
     3px -3px 0 #000;
-}
+} */
 
 select {
   padding: 8px 12px;
-  background-color: rgba(73, 73, 111, 0.807);
+  background-color: #333; /* Lighter row */
   color: white;
   border: none;
   border-radius: 5px;
@@ -132,7 +133,7 @@ select {
 #rescanBtn,
 .select-folder-button {
   padding: 8px 12px;
-  background-color: rgba(73, 73, 111, 0.807);
+  background-color: #333; /* Lighter row */
   color: white;
   border: none;
   border-radius: 5px;
@@ -147,7 +148,8 @@ select {
 
 .clickable {
   cursor: pointer;
-  color: rgb(86, 20, 148);
+  /* color: rgb(86, 20, 148); */
+  color: rgb(212, 212, 212);
 }
 
 .clickable:hover {
@@ -198,6 +200,14 @@ select {
   display: flex;
 }
 
+.toggle-album {
+  padding: 1px 8px;
+  color: rgb(172, 172, 172);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
 .album-cover-wrapper {
   display: flex;
   justify-content: center; /* Center horizontally */
@@ -207,7 +217,8 @@ select {
 }
 
 .expanded-album {
-  background-color: rgb(54, 54, 54);
+  /* background-color: rgb(54, 54, 54); */
+  background-color: #222; /* Darker row */
   display: column;
   align-content: start;
 }
@@ -232,21 +243,20 @@ select {
   margin: 7px 0px 0px 7px;
 }
 
-.audioInput {
-  width: 250px;
-}
-
 .audio-player {
   margin-left: 40px;
 }
 
 .expanded-cell {
-  background-color: rgb(54, 54, 54);
+  /* background-color: rgb(54, 54, 54); */
+  background-color: #222 !important; /* Darker row */
   color: rgb(54, 54, 54);
+  color: transparent !important; /* Make text invisible */
+  pointer-events: none; /* Disable interaction */
 }
 
 .expanded-album-info {
-  color: rgba(153, 153, 210, 0.807);
+  color: rgb(232, 232, 232) !important;
   font-size: x-large;
   margin-bottom: 0px;
 }
@@ -257,3 +267,77 @@ select {
   margin-top: 7px;
   margin-bottom: 20px;
 }
+
+tbody tr:nth-child(odd) {
+  background-color: #222; /* Darker row */
+}
+
+tbody tr:nth-child(even) {
+  background-color: #333; /* Lighter row */
+}
+
+tbody tr {
+  transition: background-color 0.3s ease-in-out;
+}
+
+table {
+  border-collapse: collapse; /* Removes spacing between cells */
+  width: 100%; /* Ensures full width */
+}
+
+.audioInput {
+  -webkit-appearance: none; /* Remove default styling */
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #555; /* Track color */
+  border-radius: 3px;
+  outline: none;
+  transition: opacity 0.2s;
+}
+
+/* WebKit (Chrome, Safari) */
+.audioInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: red; /* Change circle color */
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Mozilla (Firefox) */
+.audioInput::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: red;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Track Styling */
+.audioInput::-webkit-slider-runnable-track {
+  background: #888;
+  height: 6px;
+  border-radius: 3px;
+}
+
+.audioInput::-moz-range-track {
+  background: #888;
+  height: 6px;
+  border-radius: 3px;
+}
+
+.audioInput {
+  width: 250px;
+}
+
+.waveform {
+  width: 100%;
+  height: 50px;
+  background: #222; /* Background color */
+  border-radius: 5px;
+}
+
+

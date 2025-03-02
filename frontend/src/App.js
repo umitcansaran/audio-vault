@@ -296,9 +296,7 @@ function App() {
                   }
                 >
                   <td
-                    className={
-                      expandedAlbum === album.folderPath ? "expanded-cell" : ""
-                    }
+                    
                   >
                     <button
                       className="toggle-album"
@@ -355,7 +353,7 @@ function App() {
                   <tr>
                     <td className="expanded-album"></td>
                     <td colSpan="2" className="expanded-album">
-                      <div className="album-cover-wrapper">
+                      {/* <div className="album-cover-wrapper">
                         {labelImages[album.folderPath] === null ? (
                           <p style={{ color: "grey" }}>Loading...</p>
                         ) : labelImages[album.folderPath] ? (
@@ -367,6 +365,13 @@ function App() {
                         ) : (
                           <p>No label image available</p>
                         )}
+                      </div> */}
+                      <div className="album-cover-wrapper">
+                        <img
+                          className="album-cover"
+                          src={`file://${album.folderPath}/cover.jpg`}
+                          alt={`${album.title} Cover`}
+                        />
                       </div>
                     </td>
                     <td colSpan="4" className="expanded-album">

@@ -24,9 +24,9 @@ app.whenReady().then(() => {
   //   }
   // });
   mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
-    minWidth: 800,
+    width: 1150,
+    height: 700,
+    minWidth: 900,
     minHeight: 600,
     webPreferences: {
       nodeIntegration: false,
