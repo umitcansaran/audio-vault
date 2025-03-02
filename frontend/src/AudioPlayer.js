@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import WaveSurfer from "wavesurfer.js";
 
 const AudioPlayer = ({ album, currentSong }) => {
   const [tracks, setTracks] = useState([]);
@@ -9,38 +8,6 @@ const AudioPlayer = ({ album, currentSong }) => {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef(null);
-  const waveformRef = useRef(null);
-  const wavesurfer = useRef(null);
-
-  useEffect(() => {
-    if (!waveformRef.current) return;
-
-    // Initialize WaveSurfer
-    wavesurfer.current = WaveSurfer.create({
-      container: waveformRef.current,
-      waveColor: "#666", // Default waveform color
-      progressColor: "#e91e63", // Progress bar color
-      cursorColor: "#fff", // Cursor line
-      barWidth: 2, // Bar thickness
-      responsive: true,
-      height: 50, // Waveform height
-    });
-
-    return () => wavesurfer.current.destroy();
-  }, []);
-
-  useEffect(() => {
-    if (currentSong && wavesurfer.current) {
-      wavesurfer.current.load(currentSong);
-    }
-  }, [currentSong]);
-
-  const togglePlay = () => {
-    if (wavesurfer.current) {
-      wavesurfer.current.playPause();
-      setIsPlaying(!isPlaying);
-    }
-  };
 
   useEffect(() => {
     const fetchTracks = async () => {

@@ -230,7 +230,7 @@ select {
   font-size: small;
   width: 50px;
   height: 35px;
-  background-color: rgba(73, 73, 111, 0.807);
+  background-color: rgb(82, 82, 82);
   color: white;
   border: none;
   border-radius: 5px;
@@ -256,7 +256,7 @@ select {
 }
 
 .expanded-album-info {
-  color: rgb(232, 232, 232) !important;
+  color: rgb(191, 191, 191);
   font-size: x-large;
   margin-bottom: 0px;
 }
@@ -302,31 +302,9 @@ table {
   appearance: none;
   width: 14px;
   height: 14px;
-  background: red; /* Change circle color */
+  background: rgb(185, 185, 185); /* Change circle color */
   border-radius: 50%;
   cursor: pointer;
-}
-
-/* Mozilla (Firefox) */
-.audioInput::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
-  background: red;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-/* Track Styling */
-.audioInput::-webkit-slider-runnable-track {
-  background: #888;
-  height: 6px;
-  border-radius: 3px;
-}
-
-.audioInput::-moz-range-track {
-  background: #888;
-  height: 6px;
-  border-radius: 3px;
 }
 
 .audioInput {
