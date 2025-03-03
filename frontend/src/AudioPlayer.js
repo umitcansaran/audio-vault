@@ -9,19 +9,39 @@ const AudioPlayer = ({ album, currentSong }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef(null);
 
+  const formatDuration = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs.toString().padStart(2, "0")}`;
+  };
+
   useEffect(() => {
     const fetchTracks = async () => {
       if (window.electron && album.folderPath) {
         const songList = await window.electron.getSongs(album.folderPath);
-        const formattedTracks = songList
-          .filter((name) => !name.startsWith("._"))
-          .map((song) => ({
-            title: song,
-            path: `file://${album.folderPath}/${song}`,
-          }));
+        const formattedTracks = await Promise.all(
+          songList
+            .filter((name) => !name.startsWith("._")) // Filter unwanted files
+            .map(async (song) => {
+              const audio = new Audio(`file://${album.folderPath}/${song}`);
+              await new Promise((resolve) => {
+                audio.addEventListener("loadedmetadata", resolve, {
+                  once: true,
+                });
+              });
+
+              return {
+                title: song,
+                path: `file://${album.folderPath}/${song}`,
+                duration: formatDuration(audio.duration), // Format duration
+              };
+            })
+        );
+
         setTracks(formattedTracks);
       }
     };
+
     fetchTracks();
   }, [album.folderPath]);
 
@@ -139,6 +159,7 @@ const AudioPlayer = ({ album, currentSong }) => {
             }`}
           >
             {track.title.replace(/\.flac$/gi, "")}
+            {" (" + track.duration + ")"}
           </p>
         ))}
       </div>

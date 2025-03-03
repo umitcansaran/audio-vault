@@ -309,19 +309,25 @@ function App() {
                       className={index % 2 === 0 ? "row-dark" : "row-light"}
                     >
                       <td>
-                        <button
-                          className="toggle-album"
-                          onClick={(e) => toggleAlbum(e, album)}
-                        >
-                          {expandedAlbum === album.folderPath ? "−" : "+"}
-                        </button>
+                        <div className="toggle-album-container">
+                          <button
+                            className="toggle-album"
+                            onClick={(e) => toggleAlbum(e, album)}
+                          >
+                            {expandedAlbum === album.folderPath ? "−" : "+"}
+                          </button>
+                          <button
+                            className="toggle-album folder-icon"
+                            onClick={(e) => toggleAlbum(e, album)}
+                          >
+                            {expandedAlbum === album.folderPath ? "📂" : "📁"}
+                          </button>
+                        </div>
                       </td>
                       <td
-                        className={`album-list clickable ${
-                          expandedAlbum === album.folderPath
-                            ? "expanded-cell"
-                            : ""
-                        }`}
+                        className={`album-list clickable ${(index % 2 === 0 ? "row-dark" : "row-light") && (expandedAlbum === album.folderPath
+                          ? "expanded-cell"
+                          : "")}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleArtistClick(album.artist);
@@ -330,38 +336,30 @@ function App() {
                         {album.artist}
                       </td>
                       <td
-                        className={`album-list ${
-                          expandedAlbum === album.folderPath
-                            ? "expanded-cell"
-                            : ""
-                        }`}
+                        className={`album-list ${(index % 2 === 0 ? "row-dark" : "row-light") && (expandedAlbum === album.folderPath
+                          ? "expanded-cell"
+                          : "")}`}
                       >
                         {album.title}
                       </td>
                       <td
-                        className={`album-list year-row ${
-                          expandedAlbum === album.folderPath
-                            ? "expanded-cell"
-                            : ""
-                        }`}
+                        className={`album-list year-row ${(index % 2 === 0 ? "row-dark" : "row-light") && (expandedAlbum === album.folderPath
+                          ? "expanded-cell"
+                          : "")}`}
                       >
                         {album.year}
                       </td>
                       <td
-                        className={`album-list ${
-                          expandedAlbum === album.folderPath
-                            ? "expanded-cell"
-                            : ""
-                        }`}
+                        className={`album-list ${(index % 2 === 0 ? "row-dark" : "row-light") && (expandedAlbum === album.folderPath
+                          ? "expanded-cell"
+                          : "")}`}
                       >
                         {album.labelCode}
                       </td>
                       <td
-                        className={`album-list clickable ${
-                          expandedAlbum === album.folderPath
-                            ? "expanded-cell"
-                            : ""
-                        }`}
+                        className={`album-list clickable ${(index % 2 === 0 ? "row-dark" : "row-light") && (expandedAlbum === album.folderPath
+                          ? "expanded-cell"
+                          : "")}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleLabelClick(album.labelName);
@@ -372,8 +370,8 @@ function App() {
                     </tr>
                     {expandedAlbum === album.folderPath && (
                       <tr>
-                        <td className="expanded-album"></td>
-                        <td colSpan="2" className="expanded-album">
+                        <td className={`expanded-album ${index % 2 === 0 ? "row-dark" : "row-light"}`}></td>
+                        <td colSpan="2" className={`expanded-album ${index % 2 === 0 ? "row-dark" : "row-light"}`}>
                           {/* <div className="album-cover-wrapper">
                         {labelImages[album.folderPath] === null ? (
                           <p style={{ color: "grey" }}>Loading...</p>
@@ -395,7 +393,7 @@ function App() {
                             />
                           </div>
                         </td>
-                        <td colSpan="4" className="expanded-album">
+                        <td colSpan="4" className={`expanded-album ${index % 2 === 0 ? "row-dark" : "row-light"}`}>
                           <AudioPlayer
                             album={album}
                             currentSong={currentSong}

@@ -264,8 +264,6 @@ select:focus,
 }
 
 .expanded-cell {
-  background-color: #222 !important;
-  color: rgb(54, 54, 54);
   color: transparent !important;
   pointer-events: none;
 }
@@ -325,3 +323,12 @@ table {
   background-color: #333;
 }
 
+.toggle-album-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.folder-icon {
+  height: 0px;
+  padding: 0px;
+}
