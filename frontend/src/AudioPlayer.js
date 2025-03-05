@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
+import Turntable from "./Turntable";
 
-const AudioPlayer = ({ album, currentSong }) => {
+const AudioPlayer = ({ album, currentSong, index }) => {
   const [tracks, setTracks] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -8,12 +9,75 @@ const AudioPlayer = ({ album, currentSong }) => {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef(null);
+  const canvasRef = useRef(null);
+  const analyserRef = useRef(null);
+  const dataArrayRef = useRef(null);
+  const animationFrameRef = useRef(null);
+  const audioContextRef = useRef(null);
+  const sourceRef = useRef(null);
 
   const formatDuration = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${minutes}:${secs.toString().padStart(2, "0")}`;
   };
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+
+    const audio = audioRef.current;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    // Créer le contexte audio une seule fois
+    if (!audioContextRef.current) {
+      audioContextRef.current = new (window.AudioContext ||
+        window.webkitAudioContext)();
+    }
+
+    const audioContext = audioContextRef.current;
+
+    if (!sourceRef.current) {
+      sourceRef.current = audioContext.createMediaElementSource(audio);
+      sourceRef.current.connect(audioContext.destination);
+    }
+
+    const analyser = audioContext.createAnalyser();
+    sourceRef.current.connect(analyser);
+    analyser.fftSize = 64;
+
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    analyserRef.current = analyser;
+    dataArrayRef.current = dataArray;
+
+    const draw = () => {
+      if (!canvas || !ctx || !analyserRef.current) return;
+      analyserRef.current.getByteFrequencyData(dataArrayRef.current);
+
+      analyser.minDecibels = -130; // Lower the floor to capture soft sounds
+      analyser.maxDecibels = -10; // Prevents over-amplification of strong signals
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const barWidth = canvas.width / bufferLength;
+      let x = 0;
+
+      dataArrayRef.current.forEach((value) => {
+        const barHeight = (value / 255) * canvas.height;
+        ctx.fillStyle = `rgb(127, 127, 127)`;
+        ctx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
+        x += barWidth;
+      });
+
+      animationFrameRef.current = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    return () => {
+      cancelAnimationFrame(animationFrameRef.current);
+    };
+  }, [currentTrackIndex]);
 
   useEffect(() => {
     const fetchTracks = async () => {
@@ -100,6 +164,23 @@ const AudioPlayer = ({ album, currentSong }) => {
 
   return (
     <div className="audio-player">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+        className="audio-equalizer"
+      >
+        <canvas
+          ref={canvasRef}
+          width={300}
+          height={95}
+          style={{
+            background: index % 2 === 0 ? "#222" : "#333", // Dynamic background
+            marginTop: 0,
+          }}
+        />
+      </div>
       <p className="expanded-album-info">
         {album.artist} - {album.title}
       </p>
@@ -112,6 +193,10 @@ const AudioPlayer = ({ album, currentSong }) => {
         onTimeUpdate={onTimeUpdate}
         onLoadedMetadata={onLoadedMetadata}
       ></audio>
+      {/* <Turntable
+        isPlaying={isPlaying}
+        albumCover={`file://${album.folderPath}/cover.jpg`}
+      /> */}
       {tracks.length > 0 && currentTrackIndex !== null ? (
         <div className="song-duration">
           {new Date(currentTime * 1000).toISOString().substr(14, 5)} /{" "}

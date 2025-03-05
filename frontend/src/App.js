@@ -66,25 +66,33 @@ function App() {
   };
 
   const filteredAlbums = albums
-    .filter(
-      (album) =>
-        (selectedArtist ? album.artist === selectedArtist : true) &&
-        (selectedLabel ? album.labelName === selectedLabel : true) &&
-        (selectedYear ? album.year === selectedYear : true) &&
-        (album.artist.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          album.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          album.labelCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          album.labelName.toLowerCase().includes(searchTerm.toLowerCase()))
-    )
-    .sort((a, b) => {
-      if (!sortColumn) return 0;
-      const valueA = a[sortColumn].toString().toLowerCase();
-      const valueB = b[sortColumn].toString().toLowerCase();
+  .filter((album) => {
+    const searchWords = searchTerm.toLowerCase().split(" ").filter(Boolean); // Split by space & remove empty strings
 
-      if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
-      if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
+    // Check if the album matches the selected filters
+    const matchesFilters =
+      (selectedArtist ? album.artist === selectedArtist : true) &&
+      (selectedLabel ? album.labelName === selectedLabel : true) &&
+      (selectedYear ? album.year === selectedYear : true);
+
+    // Check if every word in `searchWords` appears in at least one of the album properties
+    const matchesSearch = searchWords.every((word) =>
+      [album.artist, album.title, album.labelCode, album.labelName]
+        .map((prop) => prop.toLowerCase())
+        .some((prop) => prop.includes(word))
+    );
+
+    return matchesFilters && matchesSearch; // Both conditions must be true
+  })
+  .sort((a, b) => {
+    if (!sortColumn) return 0;
+    const valueA = a[sortColumn].toString().toLowerCase();
+    const valueB = b[sortColumn].toString().toLowerCase();
+
+    if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
+    if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
+    return 0;
+  });
 
   const handleSort = (column) => {
     if (sortColumn === column) {
@@ -325,9 +333,12 @@ function App() {
                         </div>
                       </td>
                       <td
-                        className={`album-list clickable ${(index % 2 === 0 ? "row-dark" : "row-light") && (expandedAlbum === album.folderPath
-                          ? "expanded-cell"
-                          : "")}`}
+                        className={`album-list clickable ${
+                          (index % 2 === 0 ? "row-dark" : "row-light") &&
+                          (expandedAlbum === album.folderPath
+                            ? "expanded-cell"
+                            : "")
+                        }`}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleArtistClick(album.artist);
@@ -336,30 +347,42 @@ function App() {
                         {album.artist}
                       </td>
                       <td
-                        className={`album-list ${(index % 2 === 0 ? "row-dark" : "row-light") && (expandedAlbum === album.folderPath
-                          ? "expanded-cell"
-                          : "")}`}
+                        className={`album-list ${
+                          (index % 2 === 0 ? "row-dark" : "row-light") &&
+                          (expandedAlbum === album.folderPath
+                            ? "expanded-cell"
+                            : "")
+                        }`}
                       >
                         {album.title}
                       </td>
                       <td
-                        className={`album-list year-row ${(index % 2 === 0 ? "row-dark" : "row-light") && (expandedAlbum === album.folderPath
-                          ? "expanded-cell"
-                          : "")}`}
+                        className={`album-list year-row ${
+                          (index % 2 === 0 ? "row-dark" : "row-light") &&
+                          (expandedAlbum === album.folderPath
+                            ? "expanded-cell"
+                            : "")
+                        }`}
                       >
                         {album.year}
                       </td>
                       <td
-                        className={`album-list ${(index % 2 === 0 ? "row-dark" : "row-light") && (expandedAlbum === album.folderPath
-                          ? "expanded-cell"
-                          : "")}`}
+                        className={`album-list ${
+                          (index % 2 === 0 ? "row-dark" : "row-light") &&
+                          (expandedAlbum === album.folderPath
+                            ? "expanded-cell"
+                            : "")
+                        }`}
                       >
                         {album.labelCode}
                       </td>
                       <td
-                        className={`album-list clickable ${(index % 2 === 0 ? "row-dark" : "row-light") && (expandedAlbum === album.folderPath
-                          ? "expanded-cell"
-                          : "")}`}
+                        className={`album-list clickable ${
+                          (index % 2 === 0 ? "row-dark" : "row-light") &&
+                          (expandedAlbum === album.folderPath
+                            ? "expanded-cell"
+                            : "")
+                        }`}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleLabelClick(album.labelName);
@@ -370,8 +393,17 @@ function App() {
                     </tr>
                     {expandedAlbum === album.folderPath && (
                       <tr>
-                        <td className={`expanded-album ${index % 2 === 0 ? "row-dark" : "row-light"}`}></td>
-                        <td colSpan="2" className={`expanded-album ${index % 2 === 0 ? "row-dark" : "row-light"}`}>
+                        <td
+                          className={`expanded-album ${
+                            index % 2 === 0 ? "row-dark" : "row-light"
+                          }`}
+                        ></td>
+                        <td
+                          colSpan="2"
+                          className={`expanded-album ${
+                            index % 2 === 0 ? "row-dark" : "row-light"
+                          }`}
+                        >
                           {/* <div className="album-cover-wrapper">
                         {labelImages[album.folderPath] === null ? (
                           <p style={{ color: "grey" }}>Loading...</p>
@@ -393,10 +425,16 @@ function App() {
                             />
                           </div>
                         </td>
-                        <td colSpan="4" className={`expanded-album ${index % 2 === 0 ? "row-dark" : "row-light"}`}>
+                        <td
+                          colSpan="4"
+                          className={`expanded-album ${
+                            index % 2 === 0 ? "row-dark" : "row-light"
+                          }`}
+                        >
                           <AudioPlayer
                             album={album}
                             currentSong={currentSong}
+                            index={index}
                           />
                         </td>
                       </tr>
