@@ -164,7 +164,7 @@ function App() {
   const toggleAlbum = async (event, album) => {
     event.stopPropagation(); // Prevents the row click event from triggering
     if (expandedAlbum === album.folderPath) {
-      setExpandedAlbum(null);
+      setExpandedAlbum(null); // Collapse the album
     } else {
       if (!songs[album.folderPath]) {
         const songList = await window.electron.getSongsInFolder(
@@ -175,7 +175,7 @@ function App() {
           [album.folderPath]: songList.sort((a, b) => a.localeCompare(b)), // Ensure correct order
         }));
       }
-      setExpandedAlbum(album.folderPath);
+      setExpandedAlbum(album.folderPath); // Expand the album
 
       // Reset the image to show "Loading..." before fetching new one
       setLabelImages((prev) => ({ ...prev, [album.folderPath]: null }));
@@ -437,6 +437,7 @@ function App() {
                         index={index}
                         handleArtistClick={handleArtistClick}
                         handleLabelClick={handleLabelClick}
+                        playSong={playSong}
                       />
                     </td>
                   </tr>

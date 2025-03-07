@@ -437,3 +437,13 @@ canvas {
   cursor: pointer;
   color: rgb(236, 236, 236);
 }
+
+.bottom-player {
+  background: #222;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}

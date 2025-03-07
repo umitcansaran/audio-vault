@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import Turntable from "./Turntable";
 
 const AudioPlayer = ({
   album,
