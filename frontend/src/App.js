@@ -66,33 +66,33 @@ function App() {
   };
 
   const filteredAlbums = albums
-  .filter((album) => {
-    const searchWords = searchTerm.toLowerCase().split(" ").filter(Boolean); // Split by space & remove empty strings
+    .filter((album) => {
+      const searchWords = searchTerm.toLowerCase().split(" ").filter(Boolean); // Split by space & remove empty strings
 
-    // Check if the album matches the selected filters
-    const matchesFilters =
-      (selectedArtist ? album.artist === selectedArtist : true) &&
-      (selectedLabel ? album.labelName === selectedLabel : true) &&
-      (selectedYear ? album.year === selectedYear : true);
+      // Check if the album matches the selected filters
+      const matchesFilters =
+        (selectedArtist ? album.artist === selectedArtist : true) &&
+        (selectedLabel ? album.labelName === selectedLabel : true) &&
+        (selectedYear ? album.year === selectedYear : true);
 
-    // Check if every word in `searchWords` appears in at least one of the album properties
-    const matchesSearch = searchWords.every((word) =>
-      [album.artist, album.title, album.labelCode, album.labelName]
-        .map((prop) => prop.toLowerCase())
-        .some((prop) => prop.includes(word))
-    );
+      // Check if every word in `searchWords` appears in at least one of the album properties
+      const matchesSearch = searchWords.every((word) =>
+        [album.artist, album.title, album.labelCode, album.labelName]
+          .map((prop) => prop.toLowerCase())
+          .some((prop) => prop.includes(word))
+      );
 
-    return matchesFilters && matchesSearch; // Both conditions must be true
-  })
-  .sort((a, b) => {
-    if (!sortColumn) return 0;
-    const valueA = a[sortColumn].toString().toLowerCase();
-    const valueB = b[sortColumn].toString().toLowerCase();
+      return matchesFilters && matchesSearch; // Both conditions must be true
+    })
+    .sort((a, b) => {
+      if (!sortColumn) return 0;
+      const valueA = a[sortColumn].toString().toLowerCase();
+      const valueB = b[sortColumn].toString().toLowerCase();
 
-    if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
-    if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
-    return 0;
-  });
+      if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
+      if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
+      return 0;
+    });
 
   const handleSort = (column) => {
     if (sortColumn === column) {
@@ -304,107 +304,107 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {filteredAlbums.map(
-              (album, index) => (
-                console.log(album),
-                (
-                  <>
-                    <tr
-                      key={index}
-                      onClick={() =>
-                        window.electron.openFolder(album.folderPath)
-                      }
-                      className={index % 2 === 0 ? "row-dark" : "row-light"}
+            {filteredAlbums.map((album, index) => (
+              <>
+                <tr
+                  key={index}
+                  className={index % 2 === 0 ? "row-dark" : "row-light"}
+                >
+                  <td>
+                    <div className="toggle-album-container">
+                      {/* Expand/collapse button */}
+                      <button
+                        className="toggle-album"
+                        onClick={(e) => toggleAlbum(e, album)}
+                      >
+                        {expandedAlbum === album.folderPath ? "−" : "+"}
+                      </button>
+
+                      {/* Folder icon - now opens folder instead of clicking the whole row */}
+                      <button
+                        className="toggle-album folder-icon"
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevents row click from triggering
+                          window.electron.openFolder(album.folderPath);
+                        }}
+                      >
+                        📁
+                      </button>
+                    </div>
+                  </td>
+                  <td
+                    className={`album-list clickable ${
+                      (index % 2 === 0 ? "row-dark" : "row-light") &&
+                      (expandedAlbum === album.folderPath
+                        ? "expanded-cell"
+                        : "")
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleArtistClick(album.artist);
+                    }}
+                  >
+                    {album.artist}
+                  </td>
+                  <td
+                    className={`album-list ${
+                      (index % 2 === 0 ? "row-dark" : "row-light") &&
+                      (expandedAlbum === album.folderPath
+                        ? "expanded-cell"
+                        : "")
+                    }`}
+                  >
+                    {album.title}
+                  </td>
+                  <td
+                    className={`album-list year-row ${
+                      (index % 2 === 0 ? "row-dark" : "row-light") &&
+                      (expandedAlbum === album.folderPath
+                        ? "expanded-cell"
+                        : "")
+                    }`}
+                  >
+                    {album.year}
+                  </td>
+                  <td
+                    className={`album-list ${
+                      (index % 2 === 0 ? "row-dark" : "row-light") &&
+                      (expandedAlbum === album.folderPath
+                        ? "expanded-cell"
+                        : "")
+                    }`}
+                  >
+                    {album.labelCode}
+                  </td>
+                  <td
+                    className={`album-list clickable ${
+                      (index % 2 === 0 ? "row-dark" : "row-light") &&
+                      (expandedAlbum === album.folderPath
+                        ? "expanded-cell"
+                        : "")
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLabelClick(album.labelName);
+                    }}
+                  >
+                    {album.labelName}
+                  </td>
+                </tr>
+                {expandedAlbum === album.folderPath && (
+                  <tr>
+                    <td
+                      className={`expanded-album ${
+                        index % 2 === 0 ? "row-dark" : "row-light"
+                      }`}
+                    ></td>
+                    <td
+                      colSpan="2"
+                      className={`expanded-album ${
+                        index % 2 === 0 ? "row-dark" : "row-light"
+                      }`}
                     >
-                      <td>
-                        <div className="toggle-album-container">
-                          <button
-                            className="toggle-album"
-                            onClick={(e) => toggleAlbum(e, album)}
-                          >
-                            {expandedAlbum === album.folderPath ? "−" : "+"}
-                          </button>
-                          <button
-                            className="toggle-album folder-icon"
-                            onClick={(e) => toggleAlbum(e, album)}
-                          >
-                            {expandedAlbum === album.folderPath ? "📂" : "📁"}
-                          </button>
-                        </div>
-                      </td>
-                      <td
-                        className={`album-list clickable ${
-                          (index % 2 === 0 ? "row-dark" : "row-light") &&
-                          (expandedAlbum === album.folderPath
-                            ? "expanded-cell"
-                            : "")
-                        }`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleArtistClick(album.artist);
-                        }}
-                      >
-                        {album.artist}
-                      </td>
-                      <td
-                        className={`album-list ${
-                          (index % 2 === 0 ? "row-dark" : "row-light") &&
-                          (expandedAlbum === album.folderPath
-                            ? "expanded-cell"
-                            : "")
-                        }`}
-                      >
-                        {album.title}
-                      </td>
-                      <td
-                        className={`album-list year-row ${
-                          (index % 2 === 0 ? "row-dark" : "row-light") &&
-                          (expandedAlbum === album.folderPath
-                            ? "expanded-cell"
-                            : "")
-                        }`}
-                      >
-                        {album.year}
-                      </td>
-                      <td
-                        className={`album-list ${
-                          (index % 2 === 0 ? "row-dark" : "row-light") &&
-                          (expandedAlbum === album.folderPath
-                            ? "expanded-cell"
-                            : "")
-                        }`}
-                      >
-                        {album.labelCode}
-                      </td>
-                      <td
-                        className={`album-list clickable ${
-                          (index % 2 === 0 ? "row-dark" : "row-light") &&
-                          (expandedAlbum === album.folderPath
-                            ? "expanded-cell"
-                            : "")
-                        }`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleLabelClick(album.labelName);
-                        }}
-                      >
-                        {album.labelName}
-                      </td>
-                    </tr>
-                    {expandedAlbum === album.folderPath && (
-                      <tr>
-                        <td
-                          className={`expanded-album ${
-                            index % 2 === 0 ? "row-dark" : "row-light"
-                          }`}
-                        ></td>
-                        <td
-                          colSpan="2"
-                          className={`expanded-album ${
-                            index % 2 === 0 ? "row-dark" : "row-light"
-                          }`}
-                        >
-                          {/* <div className="album-cover-wrapper">
+                      {/* <div className="album-cover-wrapper">
                         {labelImages[album.folderPath] === null ? (
                           <p style={{ color: "grey" }}>Loading...</p>
                         ) : labelImages[album.folderPath] ? (
@@ -417,32 +417,32 @@ function App() {
                           <p>No label image available</p>
                         )}
                       </div> */}
-                          <div className="album-cover-wrapper">
-                            <img
-                              className="album-cover"
-                              src={`file://${album.folderPath}/cover.jpg`}
-                              alt={`${album.title} Cover`}
-                            />
-                          </div>
-                        </td>
-                        <td
-                          colSpan="4"
-                          className={`expanded-album ${
-                            index % 2 === 0 ? "row-dark" : "row-light"
-                          }`}
-                        >
-                          <AudioPlayer
-                            album={album}
-                            currentSong={currentSong}
-                            index={index}
-                          />
-                        </td>
-                      </tr>
-                    )}
-                  </>
-                )
-              )
-            )}
+                      <div className="album-cover-wrapper">
+                        <img
+                          className="album-cover"
+                          src={`file://${album.folderPath}/cover.jpg`}
+                          alt={`${album.title} Cover`}
+                        />
+                      </div>
+                    </td>
+                    <td
+                      colSpan="4"
+                      className={`expanded-album ${
+                        index % 2 === 0 ? "row-dark" : "row-light"
+                      }`}
+                    >
+                      <AudioPlayer
+                        album={album}
+                        currentSong={currentSong}
+                        index={index}
+                        handleArtistClick={handleArtistClick}
+                        handleLabelClick={handleLabelClick}
+                      />
+                    </td>
+                  </tr>
+                )}
+              </>
+            ))}
           </tbody>
         </table>
       </div>

@@ -60,7 +60,6 @@ code {
 .album-list,
 tr {
   padding: 20px;
-  cursor: pointer;
 }
 
 td {
@@ -171,6 +170,7 @@ select:focus,
 
 .clickable:hover {
   text-decoration: underline;
+  color: rgb(236, 236, 236) !important;
 }
 
 .select-folder-button {
@@ -429,4 +429,11 @@ table {
 
 canvas {
   background: transparent;
+}
+
+.clickable-artist:hover,
+.clickable-label:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: rgb(236, 236, 236);
 }
