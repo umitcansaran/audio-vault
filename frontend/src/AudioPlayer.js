@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import Turntable from "./Turntable";
 
 const AudioPlayer = ({
   album,
@@ -27,62 +28,62 @@ const AudioPlayer = ({
     return `${minutes}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // useEffect(() => {
-  //   if (!audioRef.current) return;
+  useEffect(() => {
+    if (!audioRef.current) return;
 
-  //   const audio = audioRef.current;
-  //   const canvas = canvasRef.current;
-  //   const ctx = canvas.getContext("2d");
+    const audio = audioRef.current;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
 
-  //   // Créer le contexte audio une seule fois
-  //   if (!audioContextRef.current) {
-  //     audioContextRef.current = new (window.AudioContext ||
-  //       window.webkitAudioContext)();
-  //   }
+    // Créer le contexte audio une seule fois
+    if (!audioContextRef.current) {
+      audioContextRef.current = new (window.AudioContext ||
+        window.webkitAudioContext)();
+    }
 
-  //   const audioContext = audioContextRef.current;
+    const audioContext = audioContextRef.current;
 
-  //   if (!sourceRef.current) {
-  //     sourceRef.current = audioContext.createMediaElementSource(audio);
-  //     sourceRef.current.connect(audioContext.destination);
-  //   }
+    if (!sourceRef.current) {
+      sourceRef.current = audioContext.createMediaElementSource(audio);
+      sourceRef.current.connect(audioContext.destination);
+    }
 
-  //   const analyser = audioContext.createAnalyser();
-  //   sourceRef.current.connect(analyser);
-  //   analyser.fftSize = 64;
+    const analyser = audioContext.createAnalyser();
+    sourceRef.current.connect(analyser);
+    analyser.fftSize = 64;
 
-  //   const bufferLength = analyser.frequencyBinCount;
-  //   const dataArray = new Uint8Array(bufferLength);
-  //   analyserRef.current = analyser;
-  //   dataArrayRef.current = dataArray;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    analyserRef.current = analyser;
+    dataArrayRef.current = dataArray;
 
-  //   const draw = () => {
-  //     if (!canvas || !ctx || !analyserRef.current) return;
-  //     analyserRef.current.getByteFrequencyData(dataArrayRef.current);
+    const draw = () => {
+      if (!canvas || !ctx || !analyserRef.current) return;
+      analyserRef.current.getByteFrequencyData(dataArrayRef.current);
 
-  //     analyser.minDecibels = -130; // Lower the floor to capture soft sounds
-  //     analyser.maxDecibels = -10; // Prevents over-amplification of strong signals
+      analyser.minDecibels = -130; // Lower the floor to capture soft sounds
+      analyser.maxDecibels = -10; // Prevents over-amplification of strong signals
 
-  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //     const barWidth = canvas.width / bufferLength;
-  //     let x = 0;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const barWidth = canvas.width / bufferLength;
+      let x = 0;
 
-  //     dataArrayRef.current.forEach((value) => {
-  //       const barHeight = (value / 255) * canvas.height;
-  //       ctx.fillStyle = `rgb(127, 127, 127)`;
-  //       ctx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
-  //       x += barWidth;
-  //     });
+      dataArrayRef.current.forEach((value) => {
+        const barHeight = (value / 255) * canvas.height;
+        ctx.fillStyle = `rgb(127, 127, 127)`;
+        ctx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
+        x += barWidth;
+      });
 
-  //     animationFrameRef.current = requestAnimationFrame(draw);
-  //   };
+      animationFrameRef.current = requestAnimationFrame(draw);
+    };
 
-  //   draw();
+    draw();
 
-  //   return () => {
-  //     cancelAnimationFrame(animationFrameRef.current);
-  //   };
-  // }, [currentTrackIndex]);
+    return () => {
+      cancelAnimationFrame(animationFrameRef.current);
+    };
+  }, [currentTrackIndex]);
 
   useEffect(() => {
     const fetchTracks = async () => {
@@ -169,7 +170,7 @@ const AudioPlayer = ({
 
   return (
     <div className="audio-player">
-      {/* <div
+      <div
         style={{
           display: "flex",
           flexDirection: "column",
@@ -185,7 +186,7 @@ const AudioPlayer = ({
             marginTop: 0,
           }}
         />
-      </div> */}
+      </div>
       <p className="expanded-album-info">
         <span
           className="clickable-artist"
@@ -198,16 +199,18 @@ const AudioPlayer = ({
         </span>
         <span> </span>- {album.title}
       </p>
-      <span>&copy; {album.year + " "}</span>
-      <span
-        className="clickable-label"
-        onClick={(e) => {
-          e.stopPropagation();
-          handleLabelClick(album.labelName);
-        }}
-      >
-        {album.labelName}
-      </span>
+      <p className="expanded-album-label">
+        <span>&copy; {album.year + " "}</span>
+        <span
+          className="clickable-label"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleLabelClick(album.labelName);
+          }}
+        >
+          {album.labelName}
+        </span>
+      </p>
       <audio
         ref={audioRef}
         onEnded={nextTrack}
