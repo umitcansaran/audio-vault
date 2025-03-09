@@ -205,11 +205,11 @@ select:focus,
 }
 
 .clickable-song:hover {
-  color: rgb(120, 120, 120);
+  color: rgb(146, 146, 146);
 }
 
 .clickable-song.playing {
-  color: rgb(120, 120, 120);
+  color: rgb(146, 146, 146);
 }
 
 .right-end-buttons {
@@ -275,7 +275,7 @@ select:focus,
 }
 
 .expanded-album-label {
-  color: rgb(149, 149, 149);
+  color: rgb(167, 167, 167);
   font-size: medium;
   margin-top: 7px;
   margin-bottom: 20px;
