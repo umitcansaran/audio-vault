@@ -122,44 +122,27 @@ function App() {
     setSelectedYear("");
   };
 
-  const fetchLabelImageFromFolder = async (album) => {
-    const apiKey = process.env.REACT_APP_DISCOGS_API_KEY; // Correct way to access the environment variable
+  // Fetch album image from Discogs
+  // const fetchAlbumImage = async (album) => {
+  //   const apiKey = process.env.REACT_APP_DISCOGS_API_KEY;
+  //   const url = `https://api.discogs.com/database/search?catno=${encodeURIComponent(
+  //     album.labelCode
+  //   )}&type=release&token=${apiKey}`;
 
-    // Regular Expression to Extract Details
-    // const folderRegex = /^(.+?) - (.+?) \((\d{4})\) \[(.+?) - (.+?)\]$/;
-    // const match = folderName.match(folderRegex);
+  //   try {
+  //     const response = await fetch(url);
+  //     const data = await response.json();
 
-    // if (!match) {
-    //   console.error("Folder name format does not match expected pattern.");
-    //   return null;
-    // }
+  //     if (data.results.length > 0) {
+  //       const result = data.results[0].cover_image; // First matching label image
+  //       return result;
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching label image:", error);
+  //   }
 
-    // const artist = match[1].trim();
-    // const album = match[2].trim();
-    // const label = match[5].trim();
-
-    // console.log(`Extracted: Artist=${artist}, Album=${album}, Label=${label}`);
-
-    // API Call to Discogs to Get Label Image
-    // const url = `https://api.discogs.com/database/search?release_title=${encodeURIComponent(album.title)}&artist=${encodeURIComponent(album.artist)}&label=${encodeURIComponent(album.labelName)}&type=release&token=${apiKey}`;
-    const url = `https://api.discogs.com/database/search?catno=${encodeURIComponent(
-      album.labelCode
-    )}&type=release&token=${apiKey}`;
-
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (data.results.length > 0) {
-        const result = data.results[0].cover_image; // First matching label image
-        return result;
-      }
-    } catch (error) {
-      console.error("Error fetching label image:", error);
-    }
-
-    return null;
-  };
+  //   return null;
+  // };
 
   const toggleAlbum = async (event, album) => {
     event.stopPropagation(); // Prevents the row click event from triggering
@@ -178,10 +161,10 @@ function App() {
       setExpandedAlbum(album.folderPath); // Expand the album
 
       // Reset the image to show "Loading..." before fetching new one
-      setLabelImages((prev) => ({ ...prev, [album.folderPath]: null }));
+      // setLabelImages((prev) => ({ ...prev, [album.folderPath]: null }));
 
-      const imageUrl = await fetchLabelImageFromFolder(album);
-      setLabelImages((prev) => ({ ...prev, [album.folderPath]: imageUrl }));
+      // const imageUrl = await fetchAlbumImage(album);
+      // setLabelImages((prev) => ({ ...prev, [album.folderPath]: imageUrl }));
     }
   };
 

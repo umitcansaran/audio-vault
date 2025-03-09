@@ -200,7 +200,6 @@ const AudioPlayer = ({
         <span> </span>- {album.title}
       </p>
       <p className="expanded-album-label">
-        <span>&copy; {album.year + " "}</span>
         <span
           className="clickable-label"
           onClick={(e) => {
@@ -208,8 +207,9 @@ const AudioPlayer = ({
             handleLabelClick(album.labelName);
           }}
         >
-          {album.labelName}
+          {album.labelName + " "}
         </span>
+        <span>&copy; {album.year}</span>
       </p>
       <audio
         ref={audioRef}
