@@ -29,6 +29,12 @@ const AudioPlayer = ({
   };
 
   useEffect(() => {
+    if (!isPlaying) {
+      setCurrentTrackIndex(null);
+    }
+  }, [isPlaying]);
+
+  useEffect(() => {
     if (!audioRef.current) return;
 
     const audio = audioRef.current;
@@ -229,7 +235,11 @@ const AudioPlayer = ({
       ) : (
         <div> 00:00 / 00:00 </div>
       )}
-      <button className="playBtn" onClick={playPauseHandler} style={{fontWeight: "bold"}}>
+      <button
+        className="playBtn"
+        onClick={playPauseHandler}
+        style={{ fontWeight: "bold" }}
+      >
         {isPlaying ? "⏸" : "▶"}
       </button>
       <input
@@ -266,14 +276,20 @@ const AudioPlayer = ({
             className={`clickable-song ${
               index === currentTrackIndex ? "playing" : ""
             }`}
-            style={index === currentTrackIndex ? {fontWeight: "bold"} : {}}
+            style={index === currentTrackIndex ? { fontWeight: "bold" } : {}}
           >
             {index === currentTrackIndex ? (
-              <button className="playBtnSmll" style={{ height:"20px", width:"20px", fontWeight: "bold"}}>
-            II
+              <button
+                className="playBtnSmll"
+                style={{ height: "20px", width: "20px", fontWeight: "bold" }}
+              >
+                II
               </button>
             ) : (
-              <button className="playBtnSmll" style={{ height:"20px", width:"20px"}}>
+              <button
+                className="playBtnSmll"
+                style={{ height: "20px", width: "20px" }}
+              >
                 ▶
               </button>
             )}
