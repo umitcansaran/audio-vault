@@ -70,7 +70,7 @@ const AudioPlayer = ({
 
       dataArrayRef.current.forEach((value) => {
         const barHeight = (value / 255) * canvas.height;
-        ctx.fillStyle = `rgb(108, 108, 108)`;
+        ctx.fillStyle = `rgb(136, 136, 136)`;
         ctx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
         x += barWidth;
       });
