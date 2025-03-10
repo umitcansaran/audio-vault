@@ -229,7 +229,7 @@ const AudioPlayer = ({
       ) : (
         <div> 00:00 / 00:00 </div>
       )}
-      <button className="playBtn" onClick={playPauseHandler}>
+      <button className="playBtn" onClick={playPauseHandler} style={{fontWeight: "bold"}}>
         {isPlaying ? "⏸" : "▶"}
       </button>
       <input
@@ -268,8 +268,17 @@ const AudioPlayer = ({
             }`}
             style={index === currentTrackIndex ? {fontWeight: "bold"} : {}}
           >
-            {track.title.replace(/\.flac$/gi, "")}
-            {" (" + track.duration + ")"}
+            {index === currentTrackIndex ? (
+              <button className="playBtnSmll" style={{ height:"20px", width:"20px", fontWeight: "bold"}}>
+            II
+              </button>
+            ) : (
+              <button className="playBtnSmll" style={{ height:"20px", width:"20px"}}>
+                ▶
+              </button>
+            )}
+            {track.title.replace(/^0+(\d+)/, "$1").replace(/\.flac$/gi, "")}
+            {"\u00A0\u00A0" + track.duration}
           </p>
         ))}
       </div>

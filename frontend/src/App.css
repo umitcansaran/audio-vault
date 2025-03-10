@@ -198,10 +198,13 @@ select:focus,
 .clickable-song {
   cursor: pointer;
   color: rgb(215, 215, 215);
+  display: flex;
+  align-items: center;
+  margin: 0px 0px 8px 0px;
 }
 
 .song-duration {
-  color: rgb(205, 205, 205);
+  color: rgb(215, 215, 215);
 }
 
 .clickable-song:hover {
@@ -249,9 +252,24 @@ select:focus,
   background-color: rgb(82, 82, 82);
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 3px;
   cursor: pointer;
   text-align: center;
+}
+
+.playBtnSmll {
+  display: flex;
+  align-items: center; /* Centers vertically */
+  justify-content: center; /* Centers horizontally */
+  margin-right: 7px;
+  font-size: small;
+  width: 50px;
+  height: 35px;
+  background-color: rgb(82, 82, 82);
+  color: rgb(210, 210, 210);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
 }
 
 .prevBtn,
