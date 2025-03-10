@@ -197,7 +197,7 @@ select:focus,
 
 .clickable-song {
   cursor: pointer;
-  color: rgb(205, 205, 205);
+  color: rgb(215, 215, 215);
 }
 
 .song-duration {
@@ -205,11 +205,11 @@ select:focus,
 }
 
 .clickable-song:hover {
-  color: rgb(146, 146, 146);
+  color: rgb(235, 235, 235);
 }
 
 .clickable-song.playing {
-  color: rgb(146, 146, 146);
+  color: rgb(230, 230, 230);
 }
 
 .right-end-buttons {
@@ -269,13 +269,14 @@ select:focus,
 }
 
 .expanded-album-info {
-  color: rgb(191, 191, 191);
+  color: rgb(200, 200, 200);
   font-size: x-large;
+  font-weight: bold;
   margin-bottom: 0px;
 }
 
 .expanded-album-label {
-  color: rgb(167, 167, 167);
+  color: rgb(220, 220, 220);
   font-size: medium;
   margin-top: 7px;
   margin-bottom: 20px;

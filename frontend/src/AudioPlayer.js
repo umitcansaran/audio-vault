@@ -70,7 +70,7 @@ const AudioPlayer = ({
 
       dataArrayRef.current.forEach((value) => {
         const barHeight = (value / 255) * canvas.height;
-        ctx.fillStyle = `rgb(136, 136, 136)`;
+        ctx.fillStyle = `rgb(85, 85, 85)`;
         ctx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
         x += barWidth;
       });
@@ -266,8 +266,8 @@ const AudioPlayer = ({
             className={`clickable-song ${
               index === currentTrackIndex ? "playing" : ""
             }`}
+            style={index === currentTrackIndex ? {fontWeight: "bold"} : {}}
           >
-            {index === currentTrackIndex ? "▶ " : null}
             {track.title.replace(/\.flac$/gi, "")}
             {" (" + track.duration + ")"}
           </p>
