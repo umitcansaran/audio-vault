@@ -99,7 +99,10 @@ const AudioPlayer = ({
           songList
             .filter((name) => !name.startsWith("._")) // Filter unwanted files
             .map(async (song) => {
-              const audio = new Audio(`file://${album.folderPath}/${song}`);
+              const audio = new Audio(
+                `file://${album.folderPath}/${encodeURIComponent(song)}`
+              );
+
               await new Promise((resolve) => {
                 audio.addEventListener("loadedmetadata", resolve, {
                   once: true,
@@ -108,7 +111,7 @@ const AudioPlayer = ({
 
               return {
                 title: song,
-                path: `file://${album.folderPath}/${song}`,
+                path: `file://${album.folderPath}/${encodeURIComponent(song)}`,
                 duration: formatDuration(audio.duration), // Format duration
               };
             })

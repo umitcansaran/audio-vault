@@ -60,7 +60,6 @@ ipcMain.handle("get-songs", async (event, folderPath) => {
     const audioFiles = files.filter(
       (file) => file.endsWith(".mp3") || file.endsWith(".flac")
     );
-
     return audioFiles; // Send the list of songs back to React
   } catch (error) {
     console.error("Error reading folder:", error);
