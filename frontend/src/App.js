@@ -382,7 +382,7 @@ function App() {
                       }`}
                     ></td>
                     <td
-                      colSpan="2"
+                      colSpan="6"
                       className={`expanded-album ${
                         index % 2 === 0 ? "row-dark" : "row-light"
                       }`}
@@ -400,21 +400,13 @@ function App() {
                           <p>No label image available</p>
                         )}
                       </div> */}
-                      <div className="album-cover-wrapper">
+                      <div className="album-wrapper">
                         <img
                           className="album-cover"
                           src={`file://${album.folderPath}/cover.jpg`}
                           alt={`${album.title} Cover`}
                         />
-                      </div>
-                    </td>
-                    <td
-                      colSpan="4"
-                      className={`expanded-album ${
-                        index % 2 === 0 ? "row-dark" : "row-light"
-                      }`}
-                    >
-                      <AudioPlayer
+                        <AudioPlayer
                         album={album}
                         currentSong={currentSong}
                         index={index}
@@ -422,6 +414,7 @@ function App() {
                         handleLabelClick={handleLabelClick}
                         playSong={playSong}
                       />
+                      </div>
                     </td>
                   </tr>
                 )}

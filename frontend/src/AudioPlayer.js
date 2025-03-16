@@ -29,12 +29,6 @@ const AudioPlayer = ({
   };
 
   useEffect(() => {
-    if (!isPlaying) {
-      setCurrentTrackIndex(null);
-    }
-  }, [isPlaying]);
-
-  useEffect(() => {
     if (!audioRef.current) return;
 
     const audio = audioRef.current;
@@ -76,7 +70,7 @@ const AudioPlayer = ({
 
       dataArrayRef.current.forEach((value) => {
         const barHeight = (value / 255) * canvas.height;
-        ctx.fillStyle = `rgb(85, 85, 85)`;
+        ctx.fillStyle = `rgb(108, 108, 108)`;
         ctx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
         x += barWidth;
       });
@@ -99,10 +93,7 @@ const AudioPlayer = ({
           songList
             .filter((name) => !name.startsWith("._")) // Filter unwanted files
             .map(async (song) => {
-              const audio = new Audio(
-                `file://${album.folderPath}/${encodeURIComponent(song)}`
-              );
-
+              const audio = new Audio(`file://${album.folderPath}/${song}`);
               await new Promise((resolve) => {
                 audio.addEventListener("loadedmetadata", resolve, {
                   once: true,
@@ -111,7 +102,7 @@ const AudioPlayer = ({
 
               return {
                 title: song,
-                path: `file://${album.folderPath}/${encodeURIComponent(song)}`,
+                path: `file://${album.folderPath}/${song}`,
                 duration: formatDuration(audio.duration), // Format duration
               };
             })
@@ -238,11 +229,7 @@ const AudioPlayer = ({
       ) : (
         <div> 00:00 / 00:00 </div>
       )}
-      <button
-        className="playBtn"
-        onClick={playPauseHandler}
-        style={{ fontWeight: "bold" }}
-      >
+      <button className="playBtn" onClick={playPauseHandler}>
         {isPlaying ? "⏸" : "▶"}
       </button>
       <input
@@ -281,21 +268,6 @@ const AudioPlayer = ({
             }`}
             style={index === currentTrackIndex ? { fontWeight: "bold" } : {}}
           >
-            {index === currentTrackIndex ? (
-              <button
-                className="playBtnSmll"
-                style={{ height: "20px", width: "20px", fontWeight: "bold" }}
-              >
-                II
-              </button>
-            ) : (
-              <button
-                className="playBtnSmll"
-                style={{ height: "20px", width: "20px" }}
-              >
-                ▶
-              </button>
-            )}
             {track.title.replace(/^0+(\d+)/, "$1").replace(/\.flac$/gi, "")}
             {"\u00A0\u00A0" + track.duration}
           </p>

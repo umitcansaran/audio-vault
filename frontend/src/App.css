@@ -228,7 +228,7 @@ select:focus,
   cursor: pointer;
 }
 
-.album-cover-wrapper {
+.album-wrapper {
   display: flex;
   justify-content: center;
   align-items: start;
