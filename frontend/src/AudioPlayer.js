@@ -70,7 +70,7 @@ const AudioPlayer = ({
 
       dataArrayRef.current.forEach((value) => {
         const barHeight = (value / 255) * canvas.height;
-        ctx.fillStyle = `rgb(108, 108, 108)`;
+        ctx.fillStyle = `rgb(86, 86, 86)`;
         ctx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
         x += barWidth;
       });
@@ -93,7 +93,10 @@ const AudioPlayer = ({
           songList
             .filter((name) => !name.startsWith("._")) // Filter unwanted files
             .map(async (song) => {
-              const audio = new Audio(`file://${album.folderPath}/${song}`);
+              const audio = new Audio(
+                `file://${album.folderPath}/${encodeURIComponent(song)}`
+              );
+
               await new Promise((resolve) => {
                 audio.addEventListener("loadedmetadata", resolve, {
                   once: true,
@@ -102,7 +105,7 @@ const AudioPlayer = ({
 
               return {
                 title: song,
-                path: `file://${album.folderPath}/${song}`,
+                path: `file://${album.folderPath}/${encodeURIComponent(song)}`,
                 duration: formatDuration(audio.duration), // Format duration
               };
             })
@@ -173,7 +176,7 @@ const AudioPlayer = ({
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "column"
         }}
         className="audio-equalizer"
       >

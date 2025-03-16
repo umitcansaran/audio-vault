@@ -26,8 +26,8 @@ app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 700,
-    minWidth: 1050,
-    minHeight: 500,
+    minWidth: 1150,
+    minHeight: 600,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
