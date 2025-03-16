@@ -200,7 +200,8 @@ const AudioPlayer = ({
         >
           {album.artist}
         </span>
-        <span> </span>- {album.title}
+      </p>
+      <p className="expanded-album-title">        {album.title}
       </p>
       <p className="expanded-album-label">
         <span

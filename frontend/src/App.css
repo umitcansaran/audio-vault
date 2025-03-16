@@ -184,7 +184,7 @@ select:focus,
 }
 
 .song-list {
-  margin-top: 30px;
+  margin-top: 25px;
   color: rgb(160, 164, 167);
 }
 
@@ -208,7 +208,7 @@ select:focus,
 }
 
 .clickable-song:hover {
-  color: rgb(235, 235, 235);
+  color: rgb(245, 245, 245);
 }
 
 .clickable-song.playing {
@@ -237,7 +237,7 @@ select:focus,
 }
 
 .expanded-album {
-  background-color: #222;
+  background-color: #361a1a;
   display: column;
   align-content: start;
 }
@@ -294,7 +294,7 @@ select:focus,
 
 .expanded-album-label {
   color: rgb(220, 220, 220);
-  font-size: medium;
+  font-size: 15px;
   margin-top: 7px;
   margin-bottom: 20px;
 }
@@ -445,15 +445,26 @@ table {
   height: 125px;
 }
 
+.expanded-album-title {
+  font-size: large;
+  margin: 0;
+  margin-top: 5px;
+  color: rgb(236, 236, 236);
+}
+
 canvas {
   background: transparent;
+}
+
+.clickable-artist {
+  font-size: larger;
 }
 
 .clickable-artist:hover,
 .clickable-label:hover {
   text-decoration: underline;
   cursor: pointer;
-  color: rgb(236, 236, 236);
+  color: rgb(225, 225, 225);
 }
 
 .bottom-player {
