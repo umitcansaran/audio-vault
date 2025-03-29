@@ -460,11 +460,14 @@ canvas {
   font-size: larger;
 }
 
+.row-artist {
+  color: antiquewhite !important;
+}
+
 .clickable-artist:hover,
 .clickable-label:hover {
   text-decoration: underline;
   cursor: pointer;
-  color: rgb(225, 225, 225);
 }
 
 .bottom-player {
